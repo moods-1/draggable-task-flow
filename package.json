@@ -3,12 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.11.2",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.3",
+    "@mui/x-date-pickers": "^5.0.13",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "axios": "^1.2.2",
+    "bootstrap": "^v4.5.0",
+    "dayjs": "^1.11.7",
+    "notistack": "^2.0.8",
+    "react": "^17.0.0",
+    "react-beautiful-dnd": "^13.1.0",
+    "react-circular-progressbar": "^2.1.0",
+    "react-dom": "^17.0.0",
+    "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
+    "reactstrap": "^8.7.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -34,5 +49,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:8080"
 }

@@ -1,0 +1,36 @@
+export const TASK_LIST_PRIORITY = {
+	0: 'High',
+	1: 'Mid',
+	2: 'Low',
+};
+
+export const TASK_LIST_PRIORITY_NUMBERS = {
+	High: 0,
+	Mid: 1,
+	Low: 2,
+};
+
+export const TASK_NUMBER_COLORS = {
+	0: 'red',
+	1: 'orange',
+	2: 'blue',
+};
+
+export const MENU_PRIORITY_BUTTONS = [
+	{ label: 'High', color: 'danger' },
+	{ label: 'Mid', color: 'warning' },
+	{ label: 'Low', color: 'primary' },
+];
+
+export const SIDEBAR_PROGRESS_LABELS = ['To Do', 'In Progress', 'Complete'];
+
+export const USERS_TABLE_HEADERS = [
+	{ label: '', field: 'profile' },
+	{ label: 'FIRST NAME', field: 'firstName', filterable: true },
+	{ label: 'LAST NAME', field: 'lastName', filterable: true },
+	{ label: 'EMAIL', field: 'email', filterable: true },
+	{ label: 'PHONE', field: 'phoneNumber', filterable: true },
+	{ label: 'Action', field: 'action', filterable: false },
+];
+
+export const NUMBER_REGEX = new RegExp(/[^\d]/g);
