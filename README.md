@@ -1,7 +1,7 @@
 ## Portfolio
 ![](dashboard.png)
 
-A drag and drop task management dashdoard with clear workflow visibility. The user can edit and add tasks and users.  
+A drag and drop task management dashboard with clear workflow visibility. The user can edit and add tasks and users.  
 
 ### Tools
 
