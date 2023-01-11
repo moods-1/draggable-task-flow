@@ -1,19 +1,12 @@
 import React, { useState, useContext, useCallback, useEffect } from 'react';
-import {
-	Modal,
-	ModalHeader,
-	ModalBody,
-	Button,
-	Row,
-	Col,
-} from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, Button, Row, Col } from 'reactstrap';
 import { TextField } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { CalendarMonth } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
-import CustomInput from '../../components/custom/CustomInput';
+import SearchInput from '../custom/SearchInput';
 import { DefaultProfile } from '../../images';
 import { TaskContext } from '../../context/taskContext';
 import {
@@ -39,7 +32,8 @@ const TaskModal = ({
 	const [showUsers, setShowUsers] = useState(false);
 	const [userFilter, setUserFilter] = useState('');
 	const [task, setTask] = useState({});
-	const { users, handleNewTask, handleUsers, loggedInUser } = useContext(TaskContext);
+	const { users, handleNewTask, handleUsers, loggedInUser } =
+		useContext(TaskContext);
 	const { enqueueSnackbar } = useSnackbar();
 
 	const snack = useCallback(
@@ -116,7 +110,7 @@ const TaskModal = ({
 		if (taskType === 'edit') {
 			setTask(currentTask);
 		} else {
-			setTask({ state: 'To Do', complete: false, id , assignor: loggedInUser});
+			setTask({ state: 'To Do', complete: false, id, assignor: loggedInUser });
 		}
 	}, [currentTask, id, taskType, loggedInUser]);
 
@@ -163,10 +157,9 @@ const TaskModal = ({
 							<hr />
 							{showUsers && (
 								<Row className='mb-4 mx-0 w-100 px-3'>
-									<CustomInput
+									<SearchInput
 										inputSize='sm'
 										inputWidth='100%'
-										sourceValue={userFilter}
 										placeHolder='Search users'
 										changeFunction={setUserFilter}
 									/>
