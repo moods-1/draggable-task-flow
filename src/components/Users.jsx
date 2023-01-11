@@ -8,7 +8,7 @@ import CustomDataTable from './custom/CustomDataTable';
 import { DefaultProfile } from '../images';
 import SearchInput from './custom/SearchInput';
 import UserModal from './Modals/UserModal';
-import { phoneNumberHypenator } from '../helpers/helperFunctions';
+import { phoneNumberHyphenator } from '../helpers/helperFunctions';
 
 function Users() {
 	const { users } = useContext(TaskContext);
@@ -24,7 +24,7 @@ function Users() {
 		const imageAlt = `${firstName} ${lastName}`;
 		return {
 			...user,
-			phoneNumber: phoneNumberHypenator(phoneNumber),
+			phoneNumber: phoneNumberHyphenator(phoneNumber),
 			profile: (
 				<img
 					src={image || DefaultProfile}

@@ -4,7 +4,6 @@ import {
 	ModalHeader,
 	ModalBody,
 	Button,
-	Input,
 	Row,
 	Col,
 } from 'reactstrap';
@@ -14,14 +13,16 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { CalendarMonth } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
+import CustomInput from '../../components/custom/CustomInput';
 import { DefaultProfile } from '../../images';
 import { TaskContext } from '../../context/taskContext';
 import {
 	TASK_LIST_PRIORITY,
 	TASK_LIST_PRIORITY_NUMBERS,
 } from '../../helpers/constants';
+import ModalTextField from './ModalTextField';
 import { makeRandomId } from '../../helpers/helperFunctions';
-import useStyles from '../../styles/TaskModalStyles';
+import useStyles from '../../styles/TaskUserModalStyles';
 
 const newId = makeRandomId(8);
 
@@ -38,7 +39,7 @@ const TaskModal = ({
 	const [showUsers, setShowUsers] = useState(false);
 	const [userFilter, setUserFilter] = useState('');
 	const [task, setTask] = useState({});
-	const { users, handleNewTask, handleUsers } = useContext(TaskContext);
+	const { users, handleNewTask, handleUsers, loggedInUser } = useContext(TaskContext);
 	const { enqueueSnackbar } = useSnackbar();
 
 	const snack = useCallback(
@@ -115,9 +116,9 @@ const TaskModal = ({
 		if (taskType === 'edit') {
 			setTask(currentTask);
 		} else {
-			setTask({ state: 'To Do', complete: false, id });
+			setTask({ state: 'To Do', complete: false, id , assignor: loggedInUser});
 		}
-	}, [currentTask, id, taskType]);
+	}, [currentTask, id, taskType, loggedInUser]);
 
 	const assignorName = task.assignor
 		? `${task.assignor.firstName} ${task.assignor.lastName}`
@@ -127,8 +128,7 @@ const TaskModal = ({
 		? `${task.assignee.firstName} ${task.assignee.lastName}`
 		: '';
 
-	const taskPriority =
-		task.priority === 0 || task.priority ? task.priority : '';
+	const taskPriority = task.priority === 0 ? '0' : task.priority;
 
 	return (
 		<Modal
@@ -162,44 +162,47 @@ const TaskModal = ({
 							</Button>
 							<hr />
 							{showUsers && (
-								<>
-									<Input
-										bsSize='sm'
-										className='shadow-none'
-										value={userFilter}
-										placeholder='Search users'
-										onChange={(e) =>
-											setUserFilter(e.target.value.toLocaleLowerCase())
-										}
+								<Row className='mb-4 mx-0 w-100 px-3'>
+									<CustomInput
+										inputSize='sm'
+										inputWidth='100%'
+										sourceValue={userFilter}
+										placeHolder='Search users'
+										changeFunction={setUserFilter}
 									/>
 									<div className='user-selection-box'>
-										{filteredUsers.map(({ id, image, firstName, lastName }) => (
-											<div
-												key={id}
-												role='presentation'
-												className='d-flex justify-content-between align-items-center'
-												onClick={() => handleAssignment(id, 'assignee')}
-											>
-												<img
-													className={`${classes.listProfile}`}
-													src={image}
-													alt={firstName}
-												/>
-												<p className='m-0 p-0'>{`${firstName} ${lastName}`}</p>
+										{filteredUsers.length ? (
+											filteredUsers.map(
+												({ id, image, firstName, lastName }) => (
+													<div
+														key={id}
+														role='presentation'
+														className='user-selection-item'
+														onClick={() => handleAssignment(id, 'assignee')}
+													>
+														<img
+															className={`${classes.listProfile}`}
+															src={image}
+															alt={firstName}
+														/>
+														<p className='m-0 p-0'>{`${firstName} ${lastName}`}</p>
+													</div>
+												)
+											)
+										) : (
+											<div className='user-selection-empty-message'>
+												No users match your search criteria.
 											</div>
-										))}
+										)}
 									</div>
 									<hr />
-								</>
+								</Row>
 							)}
 						</div>
 						<Row className='mb-4 mx-0'>
 							<Col>
-								<TextField
+								<ModalTextField
 									label='Task Title'
-									size='small'
-									variant='standard'
-									fullWidth
 									onChange={(e) => handleChange(e.target.value, 'taskTitle')}
 									inputProps={{
 										maxLength: 80,
@@ -208,8 +211,7 @@ const TaskModal = ({
 											fontSize: 15,
 										},
 									}}
-									required
-									value={task?.taskTitle || ''}
+									value={task?.taskTitle}
 								/>
 							</Col>
 						</Row>
@@ -322,7 +324,6 @@ const TaskModal = ({
 							{taskType === 'edit' && (
 								<Col>
 									<Button
-										outline
 										color='danger'
 										block
 										size='sm'

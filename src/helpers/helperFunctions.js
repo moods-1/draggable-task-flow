@@ -25,7 +25,7 @@ export function makeRandomId(length) {
 	return result;
 }
 
-export function phoneNumberHypenator(phone) {
+export function phoneNumberHyphenator(phone) {
 	let output = phone;
 	if (phone) {
 		const outputArray = [];
@@ -35,7 +35,7 @@ export function phoneNumberHypenator(phone) {
 			outputArray.push(phone.substring(6, 10));
 			output = `${outputArray.join('-')}`;
 		} else {
-			output = `+${phone}`;
+			output = `${phone}`;
 		}
 	}
 	return output;

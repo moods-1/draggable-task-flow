@@ -14,10 +14,10 @@ import {
 	ModalHeader,
 	Label,
 } from 'reactstrap';
-import { TextField } from '@mui/material';
+import ModalTextField from './ModalTextField';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { DefaultProfile } from '../../images';
-import useStyles from '../../styles/UserModalStyles';
+import useStyles from '../../styles/TaskUserModalStyles';
 import { makeRandomId } from '../../helpers/helperFunctions';
 import { NUMBER_REGEX } from '../../helpers/constants';
 import { useSnackbar } from 'notistack';
@@ -59,6 +59,9 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 			if (fileObj) {
 				const fileExt = filename.substring(filename.lastIndexOf('.') + 1);
 				if (fileExt && acceptableFiles.some((type) => fileExt.includes(type))) {
+					if (fileObj.size > 200000) {
+						return snack('Please keep the file size below 200 Kb.', 'info');
+					}
 					handleUser(URL.createObjectURL(fileObj), 'image');
 				} else {
 					handleUser(null, 'image');
@@ -98,7 +101,9 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 	};
 
 	const handleCancel = () => {
-		setCurrentUser({});
+		if (setCurrentUser) {
+			setCurrentUser({});
+		}
 		setUser({});
 		toggle();
 	};
@@ -119,7 +124,7 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 					}
 				});
 			});
-			setShowTasks(tasksSet.size ? true : false);
+			setShowTasks(type === 'edit');
 			setTasksAssigned([...tasksSet]);
 		}
 	}, [type, user.assignedTasks, tasks]);
@@ -164,12 +169,8 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 				<form onSubmit={handleSubmit}>
 					<Row className='mb-4 mx-0'>
 						<Col>
-							<TextField
+							<ModalTextField
 								label='First Name'
-								variant='standard'
-								size='small'
-								required
-								fullWidth
 								inputProps={{
 									maxLength: 30,
 									minLength: 2,
@@ -177,17 +178,13 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 										fontSize: 15,
 									},
 								}}
-								value={user?.firstName || ''}
+								value={user?.firstName}
 								onChange={(e) => handleUser(e.target.value, 'firstName')}
 							/>
 						</Col>
 						<Col>
-							<TextField
+							<ModalTextField
 								label='Last Name'
-								variant='standard'
-								size='small'
-								required
-								fullWidth
 								inputProps={{
 									maxLength: 30,
 									minLength: 2,
@@ -195,20 +192,16 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 										fontSize: 15,
 									},
 								}}
-								value={user?.lastName || ''}
+								value={user?.lastName}
 								onChange={(e) => handleUser(e.target.value, 'lastName')}
 							/>
 						</Col>
 					</Row>
 					<Row className='mb-5 mx-0'>
 						<Col>
-							<TextField
+							<ModalTextField
 								label='Email'
-								variant='standard'
-								size='small'
 								type='email'
-								required
-								fullWidth
 								inputProps={{
 									maxLength: 60,
 									minLength: 5,
@@ -216,19 +209,14 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 										fontSize: 15,
 									},
 								}}
-								value={user?.email || ''}
+								value={user?.email}
 								onChange={(e) => handleUser(e.target.value, 'email')}
 							/>
 						</Col>
 						<Col>
-							<TextField
+							<ModalTextField
 								label='Phone Number'
-								variant='standard'
-								size='small'
-								type='text'
-								fullWidth
-								value={user?.phoneNumber || ''}
-								required
+								value={user?.phoneNumber}
 								inputProps={{
 									maxLength: 10,
 									minLength: 10,
@@ -246,7 +234,7 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 						<Row className='mb-4 mx-0' style={{ marginTop: '-20px' }}>
 							<Col>
 								<div className='d-flex justify-content-between'>
-									<Label className='mb-2'>Assigned Tasks</Label>{' '}
+									<Label className='mb-2'>{`Assigned Tasks (${tasksAssigned.length})`}</Label>
 									{showTasksTable ? (
 										<ExpandLess
 											role='button'
@@ -259,7 +247,7 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 										/>
 									)}
 								</div>
-								{showTasksTable && (
+								{showTasksTable && tasksAssigned.length > 0 && (
 									<UserTaskList tasksAssigned={tasksAssigned} />
 								)}
 							</Col>
@@ -267,7 +255,12 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 					)}
 					<Row className='mb-3 mx-0'>
 						<Col>
-							<Button block size='sm' className='cancel-button' onClick={handleCancel}>
+							<Button
+								block
+								size='sm'
+								className='cancel-button'
+								onClick={handleCancel}
+							>
 								Cancel
 							</Button>
 						</Col>

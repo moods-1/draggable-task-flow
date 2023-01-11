@@ -11,6 +11,7 @@ export const TaskContext = createContext({});
 
 export const TaskContextProvider = (props) => {
 	const [users, setUsers] = useState([]);
+	const [loggedInUser, setLoggedInUser] = useState({});
 	const [tasks, setTasks] = useState(TASKS);
 	const [columns, setColumns] = useState(COLUMNS);
 	const [dashboard, setDashboard] = useState({
@@ -93,6 +94,12 @@ export const TaskContextProvider = (props) => {
 		});
 		setUsers([...localUsers]);
 	}, [tasks]);
+
+	useEffect(()=>{
+		if(users.length){
+			setLoggedInUser(users.find((u) => u.id === '001'))
+		}
+	},[users])
 	
 	const providerValue = useMemo(
 		() => ({
@@ -105,6 +112,7 @@ export const TaskContextProvider = (props) => {
 			handleColumns,
 			handleNewTask,
 			handleUsers,
+			loggedInUser,
 		}),
 		[
 			dashboard,
@@ -116,6 +124,7 @@ export const TaskContextProvider = (props) => {
 			handleColumns,
 			handleNewTask,
 			handleUsers,
+			loggedInUser,
 		]
 	);
 

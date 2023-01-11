@@ -1,12 +1,12 @@
 import { makeStyles } from '@material-ui/core';
-export default makeStyles((theme)=>({
+export default makeStyles((theme) => ({
 	modal: {
 		'& .modal-content': {
 			border: 'none',
 		},
-		'& .cancel-button':{
+		'& .cancel-button': {
 			background: theme.palette.background.light,
-		}
+		},
 	},
 	modalHeader: {
 		color: theme.palette.white,
@@ -37,6 +37,7 @@ export default makeStyles((theme)=>({
 		'& .user-selection-box': {
 			width: '100%',
 			height: 'auto',
+			minHeight: '100px',
 			maxHeight: '200px',
 			overflowY: 'auto',
 			margin: '20px 0px',
@@ -54,25 +55,38 @@ export default makeStyles((theme)=>({
 				border: 'none',
 				minHeight: '50px',
 			},
-			'& div': {
+			'& .user-selection-item': {
+				display: 'flex',
+				justifyContent: 'space-between',
+				alignItems: 'center',
 				marginBottom: '10px',
 				padding: '0px 10px',
 				boxShadow: '0px 0px 5px #DDD',
-				// borderRadius: '8px',
 			},
+			'& .user-selection-empty-message':{
+				width: '100%',
+				height: '100%',
+				display: 'grid',
+				placeItems: 'center',
+			}
 		},
 		'& .MuiButtonBase-root': {
 			'&:hover': {
 				backgroundColor: 'transparent',
 			},
 		},
-		
 	},
-	closeButton:{
-		position: 'absolute',
-		top: 5,
-		right: 15,
-		color: '#FFF',
+	modalProfileDiv: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'column',
+		gap: 30,
+		marginBottom: '30px',
+		'& img': {
+			margin: '10px auto -20px',
+			borderRadius: '50%',
+		},
 	},
 	topProfile: {
 		height: 80,
@@ -85,5 +99,14 @@ export default makeStyles((theme)=>({
 		width: 35,
 		margin: '5px 0px',
 		borderRadius: '50%',
-	},	
+	},
+	closeButton: {
+		position: 'absolute',
+		top: 5,
+		right: 15,
+		color: '#FFF',
+		'&:hover': {
+			color: theme.palette.primary.main,
+		},
+	},
 }));
