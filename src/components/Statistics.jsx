@@ -41,9 +41,9 @@ function Statistics() {
 				low += 1;
 			}
 		});
-		const toDoPercentage = parseInt((toDo / total) * 100);
-		const inProgressPercentage = parseInt((inProgress / total) * 100);
-		const completePercentage = parseInt((complete / total) * 100);
+		const toDoPercentage = parseInt((toDo / total) * 100) || 0;
+		const inProgressPercentage = parseInt((inProgress / total) * 100) || 0;
+		const completePercentage = parseInt((complete / total) * 100) || 0;
 		setProgressValues([
 			toDoPercentage,
 			inProgressPercentage,
@@ -61,7 +61,7 @@ function Statistics() {
 						{SIDEBAR_PROGRESS_LABELS.map((label, index) => (
 							<div className='statistic-box' key={label}>
 								<div className='statistic-header'>
-								<p>{label}</p>
+									<p>{label}</p>
 								</div>
 								<div style={{ width: 80, height: 80 }}>
 									<CircularProgressbar
@@ -69,7 +69,7 @@ function Statistics() {
 										text={`${progressValues[index]}%`}
 										strokeWidth={7}
 										styles={buildStyles({
-											strokeLinecap: "butt",
+											strokeLinecap: 'butt',
 											textColor: 'white',
 											pathColor: '#0275d8',
 											trailColor: 'white',
