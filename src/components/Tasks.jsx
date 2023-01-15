@@ -28,32 +28,26 @@ function Tasks() {
 
 		const start = columns[source.droppableId];
 		const finish = columns[destination.droppableId];
-		const sourceTasks = [...start.taskIds];
-		const destinationTasks = [...finish.taskIds];
 		let localColumns = { ...columns };
+		const [sourceTaskId] = start.taskIds.splice(source.index, 1);
 
 		if (start === finish) {
 			// Same column
-			const [reorderedItem] = sourceTasks.splice(source.index, 1);
-			sourceTasks.splice(destination.index, 0, reorderedItem);
-			start.taskIds = [...sourceTasks];
+			start.taskIds.splice(destination.index, 0, sourceTaskId);
 			localColumns[source.droppableId] = start;
 			handleColumns(localColumns, 'edit');
 		} else {
 			// Different column
-			const [sourceId] = sourceTasks.splice(source.index, 1);
-			finish.taskIds = destinationTasks.splice(destination.index, 0, sourceId);
-			const newStart = { ...start, taskIds: sourceTasks };
-			const newFinish = { ...finish, taskIds: destinationTasks };
+			finish.taskIds.splice(destination.index, 0, sourceTaskId);
 			localColumns = {
 				...localColumns,
-				[start.id]: newStart,
-				[finish.id]: newFinish,
+				[start.id]: start,
+				[finish.id]: finish,
 			};
 			handleColumns(localColumns, 'edit');
 			const localTasks = { ...tasks };
 			const newTitle = finish.title;
-			localTasks[sourceId].state = newTitle;
+			localTasks[sourceTaskId].state = newTitle;
 			setTasks({ ...tasks });
 		}
 	};
