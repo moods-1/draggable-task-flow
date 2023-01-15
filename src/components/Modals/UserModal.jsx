@@ -75,14 +75,6 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 		hiddenFileInput.current.click();
 	};
 
-	const handleImageButton = () => {
-		if (user.image) {
-			setUser((prevState) => ({ ...prevState, image: '' }));
-		} else {
-			chooseFile();
-		}
-	};
-
 	const handlePhoneNumber = (value, field) => {
 		if (NUMBER_REGEX.test(value)) {
 			return null;
@@ -153,9 +145,9 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 						size='sm'
 						color='link'
 						style={{ textDecoration: 'none' }}
-						onClick={handleImageButton}
+						onClick={chooseFile}
 					>
-						{user.image ? 'Delete ' : 'Select an '}image
+						{user.image ? 'Change ' : 'Select an '}image
 					</Button>
 					<input
 						ref={hiddenFileInput}
