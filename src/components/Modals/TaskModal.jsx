@@ -35,6 +35,7 @@ const TaskModal = ({
 	const { users, handleNewTask, handleUsers, loggedInUser } =
 		useContext(TaskContext);
 	const { enqueueSnackbar } = useSnackbar();
+	const [initialLoad, setInitialLoad] = useState(true);
 
 	const snack = useCallback(
 		(message, type) => {
@@ -107,12 +108,20 @@ const TaskModal = ({
 	};
 
 	useEffect(() => {
-		if (taskType === 'edit') {
-			setTask(currentTask);
-		} else {
-			setTask({ state: 'To Do', complete: false, id, assignor: loggedInUser });
+		if (initialLoad) {
+			if (taskType === 'edit') {
+				setTask(currentTask);
+			} else {
+				setTask({
+					state: 'To Do',
+					complete: false,
+					id,
+					assignor: loggedInUser,
+				});
+			}
+			setInitialLoad(false);
 		}
-	}, [currentTask, id, taskType, loggedInUser]);
+	}, [currentTask, id, taskType, loggedInUser, initialLoad]);
 
 	const assignorName = task.assignor
 		? `${task.assignor.firstName} ${task.assignor.lastName}`
