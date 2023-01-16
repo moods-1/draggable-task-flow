@@ -48,7 +48,7 @@ function Users({ snack }) {
 	});
 
 	useEffect(() => {
-		if (users) {
+		if (users.length) {
 			setLocalUsers(users);
 			setIsLoading(false);
 		}

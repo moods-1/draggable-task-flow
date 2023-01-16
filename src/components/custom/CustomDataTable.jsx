@@ -87,7 +87,7 @@ function CustomDataTable({
 		);
 	};
 
-	const showCaption = !rows.length && !isLoading;
+	const showCaption = !filteredData.length && !isLoading;
 
 	return (
 		<div className={classes.tableDiv} style={main}>
