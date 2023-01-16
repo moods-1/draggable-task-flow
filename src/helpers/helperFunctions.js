@@ -40,3 +40,6 @@ export function phoneNumberHyphenator(phone) {
 	}
 	return output;
 }
+
+export const textTruncater = (text, length) =>
+	text?.length > length ? text.substr(0, length - 1) + '...' : text;

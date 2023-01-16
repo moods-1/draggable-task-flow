@@ -198,7 +198,7 @@ const TaskModal = ({
 									label='Task Title'
 									onChange={(e) => handleChange(e.target.value, 'taskTitle')}
 									inputProps={{
-										maxLength: 80,
+										maxLength: 40,
 										minLength: 3,
 										style: {
 											fontSize: 15,

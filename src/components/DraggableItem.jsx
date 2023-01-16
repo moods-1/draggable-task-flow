@@ -2,15 +2,18 @@ import React, { useContext } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { MoreVert } from '@material-ui/icons';
 import { TASK_LIST_PRIORITY, TASK_NUMBER_COLORS } from '../helpers/constants';
+import { textTruncater } from '../helpers/helperFunctions';
 import useStyles from '../styles/TasksStyles';
 import { TaskContext } from '../context/taskContext';
 
 function DraggableItem({ item, index, columnId, handleMore, setShowTaskModal }) {
 	const classes = useStyles();
 	const { users } = useContext(TaskContext);
-	const { assignee: assigneeId } = item;
+	const { assignee: assigneeId, taskTitle } = item;
 	const assignee = users.find((u) => u._id === assigneeId);
 	if(!assignee) return null;
+	const title = textTruncater(taskTitle, 30);
+
 	return (
 		<Draggable key={item._id} draggableId={item._id} index={index}>
 			{/* eslint-disable-next-line no-shadow */}
@@ -31,7 +34,7 @@ function DraggableItem({ item, index, columnId, handleMore, setShowTaskModal }) 
 							>
 								{index + 1}
 							</p>
-							<p>{item?.taskTitle}</p>
+							<p>{title}</p>
 							<MoreVert
 								role='presentation'
 								onClick={() => {
