@@ -10,13 +10,14 @@ import SearchInput from './custom/SearchInput';
 import UserModal from './Modals/UserModal';
 import { phoneNumberHyphenator } from '../helpers/helperFunctions';
 
-function Users() {
+function Users({ snack }) {
 	const { users } = useContext(TaskContext);
 	const [showNewUserModal, setShowNewUserModal] = useState(false);
 	const [dataFilter, setDataFilter] = useState('');
 	const [localUsers, setLocalUsers] = useState([]);
 	const [currentUser, setCurrentUser] = useState({});
 	const [type, setType] = useState('new');
+	const [isLoading, setIsLoading] = useState(true);
 	const classes = useStyles();
 
 	const rows = localUsers.map((user) => {
@@ -46,7 +47,12 @@ function Users() {
 		};
 	});
 
-	useEffect(() => setLocalUsers(users), [users]);
+	useEffect(() => {
+		if (users) {
+			setLocalUsers(users);
+			setIsLoading(false);
+		}
+	}, [users]);
 
 	return (
 		<div className={classes.usersMain}>
@@ -76,6 +82,7 @@ function Users() {
 						dataFilter={dataFilter}
 						filterable
 						tableHeight={400}
+						isLoading={isLoading}
 					/>
 				</div>
 			</div>
@@ -86,6 +93,7 @@ function Users() {
 					type={type}
 					currentUser={currentUser}
 					setCurrentUser={setCurrentUser}
+					snack={snack}
 				/>
 			)}
 		</div>

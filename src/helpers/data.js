@@ -19,6 +19,7 @@ export const USERS = [
 		email: 'carl.moodie@moods.ca',
 		phoneNumber: '4161234567',
 		assignedTasks: [],
+		joinDate: '2022-01-01T13:18:37.498Z'
 	},
 	{
 		id: '002',
@@ -28,6 +29,7 @@ export const USERS = [
 		email: 'jean.simmons@moods.ca',
 		phoneNumber: '6471234567',
 		assignedTasks: [],
+		joinDate: '2023-01-16T13:18:37.498Z'
 	},
 	{
 		id: '003',
@@ -37,6 +39,7 @@ export const USERS = [
 		email: 'dave.jones@moods.ca',
 		phoneNumber: '9051234567',
 		assignedTasks: [],
+		joinDate: '2023-01-10T13:18:37.498Z'
 	},
 	{
 		id: '004',
@@ -46,6 +49,7 @@ export const USERS = [
 		email: 'bean.mann@moods.ca',
 		phoneNumber: '4161234567',
 		assignedTasks: [],
+		joinDate: '2022-12-21T13:18:37.498Z'
 	},
 ];
 

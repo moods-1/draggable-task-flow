@@ -13,13 +13,13 @@ import { theme } from './themes/theme';
 
 ReactDOM.render(
 	<MuiThemeProvider theme={theme}>
-		<TaskContextProvider>
-			<SnackbarProvider>
+		<SnackbarProvider>
+			<TaskContextProvider>
 				<Router>
 					<App />
 				</Router>
-			</SnackbarProvider>
-		</TaskContextProvider>
+			</TaskContextProvider>
+		</SnackbarProvider>
 	</MuiThemeProvider>,
 	document.getElementById('root')
 );

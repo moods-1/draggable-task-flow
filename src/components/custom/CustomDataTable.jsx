@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
+import TableRowLoading from './TableRowLoading';
 
 const useStyles = makeStyles((theme) => ({
 	tableDiv: {
@@ -26,10 +27,10 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 		minHeight: 100,
 	},
-	captionMessage:{
+	captionMessage: {
 		color: '#000',
-		padding: '50px 0px'
-	}
+		padding: '50px 0px',
+	},
 }));
 
 function CustomDataTable({
@@ -38,6 +39,7 @@ function CustomDataTable({
 	filterable,
 	dataFilter,
 	tableHeight,
+	isLoading,
 }) {
 	const [filterableIndexes, setFilterableIndexes] = useState([]);
 	const classes = useStyles();
@@ -85,6 +87,8 @@ function CustomDataTable({
 		);
 	};
 
+	const showCaption = !rows.length && !isLoading;
+
 	return (
 		<div className={classes.tableDiv} style={main}>
 			<table className='table'>
@@ -95,7 +99,7 @@ function CustomDataTable({
 						))}
 					</tr>
 				</thead>
-				{!filteredData.length && (
+				{showCaption && (
 					<caption className={classes.emptyCaption}>
 						<CaptionMessage />
 					</caption>
@@ -108,6 +112,12 @@ function CustomDataTable({
 							))}
 						</tr>
 					))}
+					{isLoading && (
+						<>
+							<TableRowLoading columns={columns} />
+							<TableRowLoading columns={columns} />
+						</>
+					)}
 				</tbody>
 			</table>
 		</div>

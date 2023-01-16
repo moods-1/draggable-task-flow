@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Row } from 'reactstrap';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { TaskContext } from '../context/taskContext';
@@ -7,15 +7,18 @@ import DroppableColumn from './DroppableColumn';
 import Statistics from './Statistics';
 import ContentHeader from './ContentHeader';
 import useStyles from '../styles/TasksStyles';
+import { moveTaskSameColumn, moveTaskNewColumn } from '../api/columns';
+import { deleteTask } from '../api/tasks';
 
-function Tasks() {
+function Tasks({ snack }) {
 	const classes = useStyles();
 	const [currentTask, setCurrentTask] = useState({});
+	const [currentColumn, setCurrentColumn] = useState(null);
 	const [showTaskModal, setShowTaskModal] = useState(false);
 	const [taskType, setTaskType] = useState('edit');
 	const { tasks, setTasks, columns, handleColumns } = useContext(TaskContext);
 
-	const onDragEnd = (result) => {
+	const onDragEnd = async (result) => {
 		const { destination, source } = result;
 		if (!destination) {
 			return null;
@@ -28,60 +31,81 @@ function Tasks() {
 
 		const start = columns[source.droppableId];
 		const finish = columns[destination.droppableId];
-		const sourceTasks = [...start.taskIds];
-		const destinationTasks = [...finish.taskIds];
 		let localColumns = { ...columns };
+		const [sourceTaskId] = start.taskIds.splice(source.index, 1);
 
 		if (start === finish) {
-			// Same column
-			const [reorderedItem] = sourceTasks.splice(source.index, 1);
-			sourceTasks.splice(destination.index, 0, reorderedItem);
-			start.taskIds = [...sourceTasks];
+			// Same column local update
+			start.taskIds.splice(destination.index, 0, sourceTaskId);
 			localColumns[source.droppableId] = start;
-			handleColumns(localColumns, 'edit');
+			handleColumns(localColumns, 'move task');
+			// Same column database update
+			const requestBody = {
+				sourceTaskId,
+				sourceIndex: source.index,
+				destinationIndex: destination.index,
+				destinationId: destination.droppableId,
+			};
+			await moveTaskSameColumn(requestBody);
 		} else {
-			// Different column
-			const [sourceId] = sourceTasks.splice(source.index, 1);
-			finish.taskIds = destinationTasks.splice(destination.index, 0, sourceId);
-			const newStart = { ...start, taskIds: sourceTasks };
-			const newFinish = { ...finish, taskIds: destinationTasks };
+			// Different column local update
+			finish.taskIds.splice(destination.index, 0, sourceTaskId);
 			localColumns = {
 				...localColumns,
-				[start.id]: newStart,
-				[finish.id]: newFinish,
+				[start._id]: start,
+				[finish._id]: finish,
 			};
-			handleColumns(localColumns, 'edit');
+			handleColumns(localColumns, 'move task');
+			// Column: Database update
+			const requestBody = {
+				sourceTaskId,
+				sourceIndex: source.index,
+				sourceId: source.droppableId,
+				destinationIndex: destination.index,
+				destinationId: destination.droppableId,
+			};
+			await moveTaskNewColumn(requestBody);
 			const localTasks = { ...tasks };
 			const newTitle = finish.title;
-			localTasks[sourceId].state = newTitle;
+			localTasks[sourceTaskId].state = newTitle;
 			setTasks({ ...tasks });
 		}
 	};
 
-	const handleDelete = (id) => {
-		const localTasks = { ...tasks };
-		const targetColumn = Object.values(columns).find((col) =>
-			col.taskIds.includes(id)
-		);
-		targetColumn.taskIds = targetColumn.taskIds.filter((task) => task !== id);
-		delete localTasks[id];
-		handleColumns({ [targetColumn.id]: targetColumn }, 'edit');
-		setTasks({ ...localTasks });
-		setShowTaskModal((prevState) => !prevState);
+	const handleDelete = async (task) => {
+		const { _id: id } = task;
+		const requestBody = { ...task, columnId: currentColumn };
+		const result = await deleteTask(requestBody);
+		const { status, data } = result;
+		if (status === 200) {
+			const localTasks = { ...tasks };
+			const targetColumn = columns[currentColumn];
+			targetColumn.taskIds = targetColumn.taskIds.filter((task) => task !== id);
+			delete localTasks[id];
+			handleColumns(
+				{ colId: currentColumn, colData: targetColumn },
+				'delete task'
+			);
+			setTasks({ ...localTasks });
+			setShowTaskModal((prevState) => !prevState);
+		} else {
+			snack(data, 'error');
+		}
 	};
 
-	const handleMore = (id) => {
-		const localTask = Object.values(tasks).find((i) => i.id === id);
-		if (currentTask.id !== id) {
+	const handleMore = (taskId, columnId) => {
+		const localTask = Object.values(tasks).find((i) => i._id === taskId);
+		if (currentTask._id !== taskId) {
 			setTaskType('edit');
+			setCurrentColumn(columnId);
 			setCurrentTask(localTask);
 		}
 	};
 
 	const handleSave = (task) => {
-		const { id } = task;
+		const { _id } = task;
 		const items = { ...tasks };
-		items[id] = task;
+		items[_id] = task;
 		setTasks({ ...items });
 		setShowTaskModal(!showTaskModal);
 		setCurrentTask({});
@@ -92,6 +116,10 @@ function Tasks() {
 		setCurrentTask({});
 		setShowTaskModal(true);
 	};
+
+	useEffect(()=>{
+
+	},[])
 
 	return (
 		<div className={classes.taskMain}>
@@ -108,7 +136,7 @@ function Tasks() {
 			</div>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Row className={classes.taskContent}>
-					{Object.values(columns).map(({ id, taskIds, title }) => {
+					{Object.values(columns).map(({ _id: id, taskIds, title }) => {
 						const localTasks = taskIds.map((taskId) => tasks[taskId]);
 						return (
 							<DroppableColumn
@@ -132,6 +160,7 @@ function Tasks() {
 					handleEditSave={handleSave}
 					handleDelete={handleDelete}
 					taskType={taskType}
+					snack={snack}
 				/>
 			)}
 		</div>

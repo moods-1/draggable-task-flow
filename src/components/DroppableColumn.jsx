@@ -39,15 +39,20 @@ function DroppableColumn({
 						ref={provided.innerRef}
 						{...provided.droppableProps}
 					>
-						{data.map((item, index) => (
-							<DraggableItem
-								key={item.id}
-								item={item}
-								index={index}
-								handleMore={handleMore}
-								setShowTaskModal={setShowTaskModal}
-							/>
-						))}
+						{data.map((item, index) => {
+							if (item) {
+								return (
+									<DraggableItem
+										key={item._id}
+										item={item}
+										index={index}
+										columnId={columnId}
+										handleMore={handleMore}
+										setShowTaskModal={setShowTaskModal}
+									/>
+								);
+							} else return null;
+						})}
 						{provided.placeholder}
 					</div>
 				)}

@@ -1,11 +1,10 @@
-import React, { useState, useContext, useCallback, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody, Button, Row, Col } from 'reactstrap';
 import { TextField } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { CalendarMonth } from '@mui/icons-material';
-import { useSnackbar } from 'notistack';
 import SearchInput from '../custom/SearchInput';
 import { DefaultProfile } from '../../images';
 import { TaskContext } from '../../context/taskContext';
@@ -14,10 +13,8 @@ import {
 	TASK_LIST_PRIORITY_NUMBERS,
 } from '../../helpers/constants';
 import ModalTextField from './ModalTextField';
-import { makeRandomId } from '../../helpers/helperFunctions';
 import useStyles from '../../styles/TaskUserModalStyles';
-
-const newId = makeRandomId(8);
+import { addTask, updateTask } from '../../api/tasks';
 
 const TaskModal = ({
 	open,
@@ -26,57 +23,41 @@ const TaskModal = ({
 	handleEditSave,
 	handleDelete,
 	taskType,
+	snack,
 }) => {
 	const classes = useStyles();
-	const id = currentTask.id || newId;
 	const [showUsers, setShowUsers] = useState(false);
 	const [userFilter, setUserFilter] = useState('');
 	const [task, setTask] = useState({});
-	const { users, handleNewTask, handleUsers, loggedInUser } =
+	const [localUsers, setLocalUsers] = useState([]);
+	const [originalAssignee, setOriginalAssignee] = useState('');
+	const { users, setRefetchUsers, handleNewTask, loggedInUser } =
 		useContext(TaskContext);
-	const { enqueueSnackbar } = useSnackbar();
+	const assignee = localUsers.find((u) => u._id === task?.assignee);
+	const assignor = localUsers.find((u) => u._id === task?.assignor);
 
-	const snack = useCallback(
-		(message, type) => {
-			enqueueSnackbar(message, { variant: type, autoHideDuration: 4000 });
-		},
-		[enqueueSnackbar]
-	);
-
-	const filteredUsers = users.filter(
+	const filteredUsers = localUsers.filter(
 		(u) =>
 			u.firstName.toLowerCase().includes(userFilter) ||
 			u.lastName.toLowerCase().includes(userFilter)
 	);
 
-	const handleAssignment = (newId, assignmentType) => {
-		const subjectUser = users.find((u) => u.id === newId);
-
+	const handleAssignment = async (userId, assignmentType) => {
+		const subjectUser = users.find((u) => u._id === userId);
 		if (assignmentType === 'assignee') {
 			const { assignedTasks } = subjectUser;
-			// Remove the current task from the original assignee
-			if (taskType === 'edit') {
-				const { assignee: originalAssignee } = currentTask;
-				const { id: originalId, assignedTasks: originalAssignedTasks } =
-					originalAssignee;
-				const originalIndex = originalAssignedTasks.indexOf(originalId);
-				originalAssignedTasks.splice(originalIndex, 1);
-				originalAssignee.assignedTasks = [...originalAssignedTasks];
-				handleUsers(originalAssignee, 'edit');
-			}
-			//
-			const assignedSet = new Set([...assignedTasks, newId]);
+			const assignedSet = new Set([...assignedTasks, userId]);
 			subjectUser.assignedTasks = [...assignedSet];
 			setTask((prevState) => ({
 				...prevState,
-				assignee: subjectUser,
+				assignee: subjectUser._id,
 			}));
 			setShowUsers(!showUsers);
 			setUserFilter('');
 		} else {
 			setTask((prevState) => ({
 				...prevState,
-				assignor: subjectUser,
+				assignor: subjectUser._id,
 			}));
 		}
 	};
@@ -93,33 +74,52 @@ const TaskModal = ({
 		toggle();
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (!task.assignee) {
 			return snack('An assignee is required.', 'info');
 		}
 		if (taskType === 'edit') {
-			handleEditSave(task);
+			const requestBody = { ...task, originalAssignee };
+			const result = await updateTask(requestBody);
+			const { status } = result;
+			if (status === 200) {
+				handleEditSave(task);
+				toggle();
+			} else {
+				snack('There was an error', 'error');
+			}
 		} else {
-			handleNewTask(task);
+			const result = await addTask(task);
+			const { status, data } = result;
+			if (status === 200) {
+				handleNewTask(data);
+				toggle();
+				snack('Task added successfully!', 'success');
+			}
 		}
-		toggle();
+		setRefetchUsers((prevState) => !prevState);
 	};
 
 	useEffect(() => {
 		if (taskType === 'edit') {
+			setOriginalAssignee(currentTask.assignee);
 			setTask(currentTask);
 		} else {
-			setTask({ state: 'To Do', complete: false, id, assignor: loggedInUser });
+			setTask({ state: 'To Do', complete: false, assignor: loggedInUser._id });
 		}
-	}, [currentTask, id, taskType, loggedInUser]);
+	}, [currentTask, taskType, loggedInUser._id]);
+
+	useEffect(() => {
+		setLocalUsers(users);
+	}, [users]);
 
 	const assignorName = task.assignor
-		? `${task.assignor.firstName} ${task.assignor.lastName}`
+		? `${assignor?.firstName} ${assignor?.lastName}`
 		: '';
 
 	const assigneeName = task.assignee
-		? `${task.assignee.firstName} ${task.assignee.lastName}`
+		? `${assignee?.firstName} ${assignee?.lastName}`
 		: '';
 
 	const taskPriority = task.priority === 0 ? '0' : task.priority;
@@ -142,8 +142,8 @@ const TaskModal = ({
 							<h4 className='text-center'>{assigneeName || 'Assignee'}</h4>
 							<img
 								className={classes.topProfile}
-								src={task.assignee?.image || DefaultProfile}
-								alt={task.assignee?.name || 'default'}
+								src={assignee?.image || DefaultProfile}
+								alt={assignee?.name || 'default'}
 							/>
 							<Button
 								className='shadow-none'
@@ -166,12 +166,12 @@ const TaskModal = ({
 									<div className='user-selection-box'>
 										{filteredUsers.length ? (
 											filteredUsers.map(
-												({ id, image, firstName, lastName }) => (
+												({ _id, image, firstName, lastName }) => (
 													<div
-														key={id}
+														key={_id}
 														role='presentation'
 														className='user-selection-item'
-														onClick={() => handleAssignment(id, 'assignee')}
+														onClick={() => handleAssignment(_id, 'assignee')}
 													>
 														<img
 															className={`${classes.listProfile}`}
@@ -216,7 +216,7 @@ const TaskModal = ({
 									size='small'
 									variant='standard'
 									fullWidth
-									value={task?.assignor?.id || ''}
+									value={assignor?._id || ''}
 									required
 									inputProps={{
 										style: {
@@ -229,8 +229,8 @@ const TaskModal = ({
 									onChange={(e) => handleAssignment(e.target.value)}
 								>
 									<option value=''>{assignorName}</option>
-									{users.map(({ firstName, lastName, id }) => (
-										<option key={id} value={id}>
+									{users.map(({ firstName, lastName, _id }) => (
+										<option key={_id} value={_id}>
 											{`${firstName} ${lastName}`}
 										</option>
 									))}
@@ -320,7 +320,7 @@ const TaskModal = ({
 										color='danger'
 										block
 										size='sm'
-										onClick={() => handleDelete(id)}
+										onClick={() => handleDelete(task)}
 									>
 										Delete task
 									</Button>

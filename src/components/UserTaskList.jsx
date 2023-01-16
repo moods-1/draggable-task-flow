@@ -6,7 +6,7 @@ function UserTaskList({ tasksAssigned }) {
 	const classes = useStyles();
 
 	const columns = [
-		{ label: 'TASK ID', field: 'id' },
+		{ label: 'TASK STATE', field: 'state' },
 		{ label: 'TASK TITLE', field: 'taskTitle' },
 	];
 

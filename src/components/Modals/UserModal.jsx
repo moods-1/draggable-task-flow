@@ -2,7 +2,6 @@ import React, {
 	useState,
 	useEffect,
 	useRef,
-	useCallback,
 	useContext,
 } from 'react';
 import {
@@ -20,14 +19,14 @@ import { DefaultProfile } from '../../images';
 import useStyles from '../../styles/TaskUserModalStyles';
 import { makeRandomId } from '../../helpers/helperFunctions';
 import { NUMBER_REGEX } from '../../helpers/constants';
-import { useSnackbar } from 'notistack';
 import { TaskContext } from '../../context/taskContext';
 import UserTaskList from '../UserTaskList';
+import { addUser, updateUser } from '../../api/users';
 
 const newId = makeRandomId(8);
 const acceptableFiles = ['png', 'jpg', 'jpeg'];
 
-function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
+function TaskModal({ open, toggle, currentUser, setCurrentUser, type, snack }) {
 	const classes = useStyles();
 	const id = currentUser?.id || newId;
 	const [user, setUser] = useState({});
@@ -35,15 +34,7 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 	const [showTasksTable, setShowTasksTable] = useState(false);
 	const [tasksAssigned, setTasksAssigned] = useState([]);
 	const hiddenFileInput = useRef();
-	const { enqueueSnackbar } = useSnackbar();
 	const { handleUsers, tasks } = useContext(TaskContext);
-
-	const snack = useCallback(
-		(message, type) => {
-			enqueueSnackbar(message, { variant: type, autoHideDuration: 4000 });
-		},
-		[enqueueSnackbar]
-	);
 
 	const handleUser = (value, field) => {
 		setUser((prevState) => ({
@@ -59,10 +50,14 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 			if (fileObj) {
 				const fileExt = filename.substring(filename.lastIndexOf('.') + 1);
 				if (fileExt && acceptableFiles.some((type) => fileExt.includes(type))) {
-					if (fileObj.size > 200000) {
-						return snack('Please keep the file size below 200 Kb.', 'info');
+					if (fileObj.size > 50000) {
+						return snack('Please keep the file size below 50 Kb.', 'info');
 					}
-					handleUser(URL.createObjectURL(fileObj), 'image');
+					const reader = new FileReader();
+					reader.readAsDataURL(fileObj);
+					reader.onloadend = () => {
+						handleUser(reader.result, 'image');
+					};
 				} else {
 					handleUser(null, 'image');
 					snack('Only files with png, jpeg or jpg extensions please.', 'error');
@@ -75,14 +70,6 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 		hiddenFileInput.current.click();
 	};
 
-	const handleImageButton = () => {
-		if (user.image) {
-			setUser((prevState) => ({ ...prevState, image: '' }));
-		} else {
-			chooseFile();
-		}
-	};
-
 	const handlePhoneNumber = (value, field) => {
 		if (NUMBER_REGEX.test(value)) {
 			return null;
@@ -91,13 +78,30 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 		}
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (!user.image) {
 			return snack('A profile image is required.', 'info');
 		}
-		handleUsers(user, type);
-		toggle();
+		if (type === 'new') {
+			const result = await addUser(user);
+			const {status, data} = result;
+			if(status===200){
+				handleUsers(data, type);
+				toggle();
+				return snack(`${user.firstName} added successfully!`, 'success');
+			}
+		} else {
+			const result = await updateUser(user);
+			const { status } = result;
+			if (status === 200) {
+				handleUsers(user, type);
+				toggle();
+				return snack(`${user.firstName} updated successfully!`, 'success');
+			} else {
+				return snack(`Sorry, we could not update ${user.firstName}.`, 'error');
+			}
+		}
 	};
 
 	const handleCancel = () => {
@@ -110,7 +114,7 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 
 	useEffect(() => {
 		if (type === 'new') {
-			setUser({ id, assignedTasks: [] });
+			setUser({  assignedTasks: [] });
 		} else setUser(currentUser);
 	}, [currentUser, id, type]);
 
@@ -119,7 +123,7 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 			const tasksSet = new Set([]);
 			user?.assignedTasks.forEach((t) => {
 				Object.values(tasks).forEach((task) => {
-					if (task.id === t) {
+					if (task._id === t) {
 						tasksSet.add(task);
 					}
 				});
@@ -153,9 +157,9 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type }) {
 						size='sm'
 						color='link'
 						style={{ textDecoration: 'none' }}
-						onClick={handleImageButton}
+						onClick={chooseFile}
 					>
-						{user.image ? 'Delete ' : 'Select an '}image
+						{user.image ? 'Change ' : 'Select an '}image
 					</Button>
 					<input
 						ref={hiddenFileInput}

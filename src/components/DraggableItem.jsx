@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { MoreVert } from '@material-ui/icons';
 import { TASK_LIST_PRIORITY, TASK_NUMBER_COLORS } from '../helpers/constants';
 import useStyles from '../styles/TasksStyles';
+import { TaskContext } from '../context/taskContext';
 
-function DraggableItem({ item, index, handleMore, setShowTaskModal }) {
+function DraggableItem({ item, index, columnId, handleMore, setShowTaskModal }) {
 	const classes = useStyles();
+	const { users } = useContext(TaskContext);
+	const { assignee: assigneeId } = item;
+	const assignee = users.find((u) => u._id === assigneeId);
+	if(!assignee) return null;
 	return (
-		<Draggable key={item.id} draggableId={item.id} index={index}>
+		<Draggable key={item._id} draggableId={item._id} index={index}>
 			{/* eslint-disable-next-line no-shadow */}
 			{(provided) => (
 				<div
@@ -30,15 +35,15 @@ function DraggableItem({ item, index, handleMore, setShowTaskModal }) {
 							<MoreVert
 								role='presentation'
 								onClick={() => {
-									handleMore(item.id);
+									handleMore(item._id, columnId);
 									setShowTaskModal(true);
 								}}
 							/>
 						</div>
 						<img
 							className={classes.profile}
-							src={item.assignee.image}
-							alt={item.assignee.firstName}
+							src={assignee.image}
+							alt={assignee.firstName}
 						/>
 					</div>
 				</div>
