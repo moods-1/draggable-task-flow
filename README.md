@@ -2,6 +2,7 @@
 ![](dashboard.png)
 
 A drag and drop task management dashboard with clear workflow visibility. The user can edit and add tasks and users.  
+Server code: https://github.com/moods-1/task-dashboard-server
 
 ### Tools
 
@@ -9,8 +10,10 @@ A drag and drop task management dashboard with clear workflow visibility. The us
   - JavaScript ES6
   - HTML5
   - CSS3
-  - Node (NPM)
   - React Beautiful DnD
   - Material UI
   - Bootstrap / Reactstrap
-  
+  - Node JS
+  - Express JS
+  - MongoDB
+  - Mongoose
