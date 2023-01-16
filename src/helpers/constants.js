@@ -37,7 +37,7 @@ export const NUMBER_REGEX = new RegExp(/[^\d]/g);
 
 // export const SERVER_BASE_URL = 'http://localhost:8080';
 
-export const SERVER_BASE_URL = 'https://task-dashboard-server-moods-1.vercel.app';
+export const SERVER_BASE_URL = 'https://task-dashboard-server.vercel.app';
 
 export const SERVER_ROUTES = {
 	USERS: {
