@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { Spinner } from 'reactstrap';
 import useStyles from '../styles/StatisticsStyles';
 import { TaskContext } from '../context/taskContext';
 import {
@@ -44,7 +45,7 @@ function Statistics() {
 		const toDoPercentage = parseInt((toDo / total) * 100) || 0;
 		const inProgressPercentage = parseInt((inProgress / total) * 100) || 0;
 		const completePercentage = parseInt((complete / total) * 100) || 0;
-	
+
 		setProgressValues([
 			toDoPercentage,
 			inProgressPercentage,
@@ -65,17 +66,21 @@ function Statistics() {
 									<p>{label}</p>
 								</div>
 								<div style={{ width: 80, height: 80 }}>
-									<CircularProgressbar
-										value={progressValues[index]}
-										text={`${progressValues[index]}%`}
-										strokeWidth={7}
-										styles={buildStyles({
-											strokeLinecap: 'butt',
-											textColor: 'white',
-											pathColor: '#0275d8',
-											trailColor: 'white',
-										})}
-									/>
+									{progressValues.length ? (
+										<CircularProgressbar
+											value={progressValues[index]}
+											text={`${progressValues[index]}%`}
+											strokeWidth={7}
+											styles={buildStyles({
+												strokeLinecap: 'butt',
+												textColor: 'white',
+												pathColor: '#0275d8',
+												trailColor: 'white',
+											})}
+										/>
+									) : (
+										<Spinner />
+									)}
 								</div>
 							</div>
 						))}

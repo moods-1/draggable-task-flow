@@ -9,12 +9,15 @@ import ContentHeader from './ContentHeader';
 import useStyles from '../styles/TasksStyles';
 import { moveTaskSameColumn, moveTaskNewColumn } from '../api/columns';
 import { deleteTask } from '../api/tasks';
+import CustomSpinner from './custom/CustomSpinner';
 
 function Tasks({ snack }) {
 	const classes = useStyles();
 	const [currentTask, setCurrentTask] = useState({});
 	const [currentColumn, setCurrentColumn] = useState(null);
+	const [columnsToDisplay, setColumnsToDisplay] = useState([]);
 	const [showTaskModal, setShowTaskModal] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 	const [taskType, setTaskType] = useState('edit');
 	const { tasks, setTasks, columns, handleColumns } = useContext(TaskContext);
 
@@ -117,9 +120,11 @@ function Tasks({ snack }) {
 		setShowTaskModal(true);
 	};
 
-	useEffect(()=>{
-
-	},[])
+	useEffect(() => {
+		const localCols = Object.values(columns);
+		setColumnsToDisplay([...localCols]);
+		setIsLoading(localCols.length < 1);
+	}, [columns]);
 
 	return (
 		<div className={classes.taskMain}>
@@ -136,19 +141,23 @@ function Tasks({ snack }) {
 			</div>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Row className={classes.taskContent}>
-					{Object.values(columns).map(({ _id: id, taskIds, title }) => {
-						const localTasks = taskIds.map((taskId) => tasks[taskId]);
-						return (
-							<DroppableColumn
-								key={id}
-								columnId={id}
-								title={title}
-								data={localTasks}
-								handleMore={handleMore}
-								setShowTaskModal={setShowTaskModal}
-							/>
-						);
-					})}
+					{isLoading ? (
+						<CustomSpinner height={300} color={'primary'} />
+					) : (
+						columnsToDisplay.map(({ _id: id, taskIds, title }) => {
+							const localTasks = taskIds.map((taskId) => tasks[taskId]);
+							return (
+								<DroppableColumn
+									key={id}
+									columnId={id}
+									title={title}
+									data={localTasks}
+									handleMore={handleMore}
+									setShowTaskModal={setShowTaskModal}
+								/>
+							);
+						})
+					)}
 				</Row>
 			</DragDropContext>
 			{showTaskModal && (

@@ -121,7 +121,7 @@ export const TaskContextProvider = (props) => {
 				});
 				setTasks({ ...localTasks });
 			} else {
-				snack('There was an error fetching tasks', 'error');
+				snack('There was an error retrieving tasks.', 'error');
 			}
 		}
 		getTasks();
