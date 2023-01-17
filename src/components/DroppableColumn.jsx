@@ -33,9 +33,11 @@ function DroppableColumn({
 				<Quantity />
 			</div>
 			<Droppable droppableId={columnId}>
-				{(provided) => (
+				{(provided, snapshot) => (
 					<div
-						className='droppable-column-div'
+						className={`droppable-column-div ${
+							snapshot.isDraggingOver ? 'dragging-over' : ''
+						}`}
 						ref={provided.innerRef}
 						{...provided.droppableProps}
 					>

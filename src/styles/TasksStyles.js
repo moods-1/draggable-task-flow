@@ -49,6 +49,9 @@ export default makeStyles((theme) => ({
 			width: '100%',
 			height: '100%',
 		},
+		'& .dragging-over': {
+			backgroundColor: '#daedf4',
+		},
 	},
 	taskContent: {
 		justifyContent: 'left',
