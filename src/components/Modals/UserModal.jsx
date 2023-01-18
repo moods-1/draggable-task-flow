@@ -85,15 +85,15 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type, snack }) {
 		}
 		if (type === 'new') {
 			const result = await addUser(user);
-			const {status, data} = result;
+			const {status, reponse} = result.data;
 			if(status===200){
-				handleUsers(data, type);
+				handleUsers(reponse, type);
 				toggle();
 				return snack(`${user.firstName} added successfully!`, 'success');
 			}
 		} else {
 			const result = await updateUser(user);
-			const { status } = result;
+			const { status } = result.data;
 			if (status === 200) {
 				handleUsers(user, type);
 				toggle();

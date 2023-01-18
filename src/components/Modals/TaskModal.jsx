@@ -82,7 +82,7 @@ const TaskModal = ({
 		if (taskType === 'edit') {
 			const requestBody = { ...task, originalAssignee };
 			const result = await updateTask(requestBody);
-			const { status } = result;
+			const { status } = result.data;
 			if (status === 200) {
 				handleEditSave(task);
 				toggle();
@@ -91,9 +91,9 @@ const TaskModal = ({
 			}
 		} else {
 			const result = await addTask(task);
-			const { status, data } = result;
+			const { status, response } = result.data;
 			if (status === 200) {
-				handleNewTask(data);
+				handleNewTask(response);
 				toggle();
 				snack('Task added successfully!', 'success');
 			}

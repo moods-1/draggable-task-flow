@@ -79,7 +79,7 @@ function Tasks({ snack }) {
 		const { _id: id } = task;
 		const requestBody = { ...task, columnId: currentColumn };
 		const result = await deleteTask(requestBody);
-		const { status, data } = result;
+		const { status, response } = result?.data;
 		if (status === 200) {
 			const localTasks = { ...tasks };
 			const targetColumn = columns[currentColumn];
@@ -92,7 +92,7 @@ function Tasks({ snack }) {
 			setTasks({ ...localTasks });
 			setShowTaskModal((prevState) => !prevState);
 		} else {
-			snack(data, 'error');
+			snack(response?.message, 'error');
 		}
 	};
 

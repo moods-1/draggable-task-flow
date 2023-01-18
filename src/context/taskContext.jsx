@@ -99,9 +99,9 @@ export const TaskContextProvider = (props) => {
 	useEffect(() => {
 		async function getUsers() {
 			const userData = await getAllUsers();
-			const { status, data } = userData;
+			const { status, response } = userData.data;
 			if (status === 200) {
-				setUsers(data);
+				setUsers(response);
 			} else {
 				snack('There was an error retrieving users.', 'error');
 			}
@@ -112,10 +112,10 @@ export const TaskContextProvider = (props) => {
 	useEffect(() => {
 		async function getTasks() {
 			const taskData = await getAllTasks();
-			const { status, data } = taskData;
+			const { status, response } = taskData?.data;
 			if (status === 200) {
 				const localTasks = {};
-				data.forEach((d) => {
+				response.forEach((d) => {
 					const { _id: id } = d;
 					localTasks[id] = d;
 				});
@@ -130,10 +130,10 @@ export const TaskContextProvider = (props) => {
 	useEffect(() => {
 		async function getColumns() {
 			const columnData = await getAllColumns();
-			const { status, data } = columnData;
+			const { status, response } = columnData.data;
 			if (status === 200) {
 				const localColumns = {};
-				data.forEach((d) => {
+				response.forEach((d) => {
 					const { _id: id } = d;
 					localColumns[id] = d;
 				});
