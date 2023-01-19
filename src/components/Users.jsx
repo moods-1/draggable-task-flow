@@ -71,7 +71,7 @@ function Users({ snack }) {
 				<div>
 					<div className={classes.tableTop}>
 						<SearchInput
-							placeHolder='Search for users'
+							placeHolder='Search users'
 							changeFunction={setDataFilter}
 							inputSize='sm'
 						/>
