@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { Row } from 'reactstrap';
 import { DragDropContext } from 'react-beautiful-dnd';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { TaskContext } from '../context/taskContext';
 import TaskModal from './Modals/TaskModal';
 import DroppableColumn from './DroppableColumn';
@@ -10,6 +11,7 @@ import useStyles from '../styles/TasksStyles';
 import { moveTaskSameColumn, moveTaskNewColumn } from '../api/columns';
 import { deleteTask } from '../api/tasks';
 import CustomSpinner from './custom/CustomSpinner';
+import StateFilters from './StateFilters';
 
 function Tasks({ snack }) {
 	const classes = useStyles();
@@ -19,7 +21,28 @@ function Tasks({ snack }) {
 	const [showTaskModal, setShowTaskModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [taskType, setTaskType] = useState('edit');
+	const [filterObject, setFilterObject] = useState({});
+	const [showFilters, setShowFilters] = useState(false);
 	const { tasks, setTasks, columns, handleColumns } = useContext(TaskContext);
+
+	const filteredTasks = Object.values(tasks).filter(
+		(t) => t.state in filterObject || !Object.keys(filterObject).length
+	);
+
+	const FilterButton = () => {
+		return (
+			<div className='mb-2 text-white'>
+				<p
+					role='button'
+					style={{ display: 'flex', alignItems: 'center' }}
+					onClick={() => setShowFilters(!showFilters)}
+				>
+					Filtering
+					{showFilters ? <ExpandLess /> : <ExpandMore />}
+				</p>
+			</div>
+		);
+	};
 
 	const onDragEnd = async (result) => {
 		const { destination, source } = result;
@@ -120,6 +143,16 @@ function Tasks({ snack }) {
 		setShowTaskModal(true);
 	};
 
+	const handleFilterObject = (key, value) => {
+		let localFilterObject = { ...filterObject };
+		if (key in filterObject) {
+			delete localFilterObject[key];
+		} else {
+			localFilterObject[key] = value;
+		}
+		setFilterObject({ ...localFilterObject });
+	};
+
 	useEffect(() => {
 		const localCols = Object.values(columns);
 		setColumnsToDisplay([...localCols]);
@@ -137,7 +170,20 @@ function Tasks({ snack }) {
 				buttonFunction={handleNewTaskButton}
 			/>
 			<div>
-				<Statistics />
+				<FilterButton />
+				{showFilters && (
+					<StateFilters
+						filterObject={filterObject}
+						handleFilterObject={handleFilterObject}
+					/>
+				)}
+			</div>
+			<div>
+				<Statistics
+					showFilters={showFilters}
+					filterObject={filterObject}
+					handleFilterObject={handleFilterObject}
+				/>
 			</div>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Row className={classes.taskContent}>
@@ -145,7 +191,9 @@ function Tasks({ snack }) {
 						<CustomSpinner height={300} color={'primary'} />
 					) : (
 						columnsToDisplay.map(({ _id: id, taskIds, title }) => {
-							const localTasks = taskIds.map((taskId) => tasks[taskId]);
+							const localTasks = taskIds.map((taskId) =>
+								filteredTasks.find((f) => f._id === taskId)
+							);
 							return (
 								<DroppableColumn
 									key={id}

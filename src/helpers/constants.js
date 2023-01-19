@@ -53,3 +53,33 @@ export const SERVER_ROUTES = {
 		BASE: '/tasks',
 	},
 };
+
+export const TASK_STATE_FILTERS = [
+	{
+		label: 'To Do',
+		value: 'To Do',
+	},
+	{
+		label: 'In Progress',
+		value: 'In Progress',
+	},
+	{
+		label: 'Complete',
+		value: 'Complete',
+	},
+];
+
+export const TASK_PRIORITY_FILTERS = [
+	{
+		label: 'High',
+		value: 0,
+	},
+	{
+		label: 'Mid',
+		value: 1,
+	},
+	{
+		label: 'Low',
+		value: '2',
+	},
+];

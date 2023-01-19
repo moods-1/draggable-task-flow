@@ -93,4 +93,19 @@ export default makeStyles((theme) => ({
 		width: 40,
 		borderRadius: '50%',
 	},
+	// Task Filters
+	filterMain: {
+		width: '100%',
+		minHeight: '50px',
+		display: 'flex',
+		alignItems: 'center',
+		color: '#FFF',
+		fontSize: '14px',
+		background: theme.palette.background.light,
+		marginBottom: '10px',
+		padding: '10px',
+		'& .filter-subject-label':{
+			marginRight: 10,
+		}
+	},
 }));
