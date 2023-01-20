@@ -10,7 +10,7 @@ import {
 } from '../helpers/constants';
 import { statusColor } from '../helpers/helperFunctions';
 
-function Statistics({ showFilters, filterObject, handleFilterObject }) {
+function Statistics() {
 	const [progressValues, setProgressValues] = useState([]);
 	const [priorityValues, setPriorityValues] = useState([]);
 	const { tasks } = useContext(TaskContext);

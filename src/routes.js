@@ -1,12 +1,13 @@
+import { PeopleAlt, List } from '@mui/icons-material';
 export const routes = [
 	{
 		title: 'TASKS',
 		path: '/',
-        icon: 'fas fa-list'
+		icon: <List fontSize='small' />,
 	},
 	{
 		title: 'USERS',
 		path: '/users',
-        icon: 'fas fa-users'
+		icon: <PeopleAlt fontSize='small' />,
 	},
 ];

@@ -26,7 +26,7 @@ function Sidebar({ headerHeight }) {
 			style={{ minHeight: `calc(100vh - ${headerHeight}px)` }}
 		>
 			<div className={classes.controlDiv}>
-				<button aria-label="Expansion" onClick={handleControlButton}>
+				<button aria-label='Expansion' onClick={handleControlButton}>
 					{sidebarLarge ? <ChevronLeft /> : <ChevronRight />}
 				</button>
 			</div>
@@ -37,7 +37,7 @@ function Sidebar({ headerHeight }) {
 							<NavLink to={path}>
 								<div>
 									{sidebarLarge ? title : ''}
-									{icon ? <i className={icon} /> : ''}
+									{icon ? icon : ''}
 								</div>
 							</NavLink>
 						</li>

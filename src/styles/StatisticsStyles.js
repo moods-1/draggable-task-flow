@@ -17,7 +17,6 @@ export default makeStyles((theme) => ({
 		'& .statistics-box': {
 			display: 'flex',
 			gap: 20,
-
 			'& .statistic-box': {
 				'& .statistic-header': {
 					width: '100%',
