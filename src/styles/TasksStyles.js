@@ -19,7 +19,7 @@ export default makeStyles((theme) => ({
 			margin: 0,
 		},
 		'& .droppable-column': {
-			minWidth: '340px',
+			minWidth: '330px',
 			minHeight: '200px',
 			border: 'none',
 			borderRadius: '0px',
@@ -96,7 +96,7 @@ export default makeStyles((theme) => ({
 	// Task Filters
 	filterMain: {
 		width: '100%',
-		minHeight: '50px',
+		height: '50px',
 		display: 'flex',
 		alignItems: 'center',
 		color: '#FFF',
@@ -104,8 +104,8 @@ export default makeStyles((theme) => ({
 		background: theme.palette.background.light,
 		marginBottom: '10px',
 		padding: '10px',
-		'& .filter-subject-label':{
+		'& .filter-subject-label': {
 			marginRight: 10,
-		}
+		},
 	},
 }));

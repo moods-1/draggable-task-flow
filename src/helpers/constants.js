@@ -51,6 +51,7 @@ export const SERVER_ROUTES = {
 	},
 	TASKS: {
 		BASE: '/tasks',
+		DUE_SOON: '/tasks/tasks-due-soon',
 	},
 };
 

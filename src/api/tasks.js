@@ -35,3 +35,12 @@ export const deleteTask = async (body) => {
 		return error;
 	}
 };
+
+export const taksDueSoon = async (days) => {
+	try {
+		const url = `${SERVER_BASE_URL}${SERVER_ROUTES.TASKS.DUE_SOON}/${days}`;
+		return await axios(url);
+	} catch (error) {
+		return error;
+	}
+};

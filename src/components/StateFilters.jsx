@@ -2,10 +2,10 @@ import React from 'react';
 import useStyles from '../styles/TasksStyles';
 import { TASK_STATE_FILTERS } from '../helpers/constants';
 
-function StateFilters({ filterObject, handleFilterObject }) {
+function StateFilters({ filterObject, handleFilterObject, showFilters }) {
 	const classes = useStyles();
 	return (
-		<div className={classes.filterMain}>
+		<div className={`${classes.filterMain} ${showFilters ? 'grow' : ''}`}>
 			<p className='filter-subject-label'>State:</p>
 			{TASK_STATE_FILTERS.map(({ label, value }) => (
 				<div

@@ -5,6 +5,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { TaskContext } from '../context/taskContext';
 import TaskModal from './Modals/TaskModal';
 import DroppableColumn from './DroppableColumn';
+import NonDroppableColumn from './NonDroppableColumn';
 import Statistics from './Statistics';
 import ContentHeader from './ContentHeader';
 import useStyles from '../styles/TasksStyles';
@@ -23,7 +24,8 @@ function Tasks({ snack }) {
 	const [taskType, setTaskType] = useState('edit');
 	const [filterObject, setFilterObject] = useState({});
 	const [showFilters, setShowFilters] = useState(false);
-	const { tasks, setTasks, columns, handleColumns } = useContext(TaskContext);
+	const { tasks, setTasks, tasksDue, columns, handleColumns } =
+		useContext(TaskContext);
 
 	const filteredTasks = Object.values(tasks).filter(
 		(t) => t.state in filterObject || !Object.keys(filterObject).length
@@ -190,21 +192,29 @@ function Tasks({ snack }) {
 					{isLoading ? (
 						<CustomSpinner height={300} color={'primary'} />
 					) : (
-						columnsToDisplay.map(({ _id: id, taskIds, title }) => {
-							const localTasks = taskIds.map((taskId) =>
-								filteredTasks.find((f) => f._id === taskId)
-							);
-							return (
-								<DroppableColumn
-									key={id}
-									columnId={id}
-									title={title}
-									data={localTasks}
-									handleMore={handleMore}
-									setShowTaskModal={setShowTaskModal}
-								/>
-							);
-						})
+						<>
+							{columnsToDisplay.map(({ _id: id, taskIds, title }) => {
+								const localTasks = taskIds.map((taskId) =>
+									filteredTasks.find((f) => f._id === taskId)
+								);
+								return (
+									<DroppableColumn
+										key={id}
+										columnId={id}
+										title={title}
+										data={localTasks}
+										handleMore={handleMore}
+										setShowTaskModal={setShowTaskModal}
+									/>
+								);
+							})}
+							<NonDroppableColumn
+								data={tasksDue}
+								title='Due Soon'
+								handleMore={handleMore}
+								setShowTaskModal={setShowTaskModal}
+							/>
+						</>
 					)}
 				</Row>
 			</DragDropContext>

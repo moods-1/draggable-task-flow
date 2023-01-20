@@ -8,7 +8,7 @@ import React, {
 import { useSnackbar } from 'notistack';
 import { getAllUsers } from '../api/users';
 import { getAllColumns } from '../api/columns';
-import { getAllTasks } from '../api/tasks';
+import { getAllTasks, taksDueSoon } from '../api/tasks';
 
 export const TaskContext = createContext({});
 
@@ -17,7 +17,8 @@ export const TaskContextProvider = (props) => {
 	const [refetchUsers, setRefetchUsers] = useState(false);
 	const [loggedInUser, setLoggedInUser] = useState({});
 	const [tasks, setTasks] = useState({});
-	const [columns, setColumns] = useState([]);
+	const [columns, setColumns] = useState({});
+	const [tasksDue, setTasksDue] = useState([]);
 	const { enqueueSnackbar } = useSnackbar();
 	const [dashboard, setDashboard] = useState({
 		sidebarLarge: true,
@@ -145,6 +146,19 @@ export const TaskContextProvider = (props) => {
 		getColumns();
 	}, [snack]);
 
+	useEffect(()=>{
+		async function getTasksDueSoon(){
+			const dueSoon = await taksDueSoon(5);
+			const {status, response} = dueSoon.data;
+			if(status === 200){
+				setTasksDue(response);
+			}else{
+				snack('There was an error retrieving tasks due soon.', 'error');
+			}
+		}
+		getTasksDueSoon();
+	},[snack, tasks])
+
 	useEffect(() => {
 		if (users.length) {
 			setLoggedInUser(users.find((u) => u._id === '63c149099e9fb6a68fcb052c'));
@@ -164,6 +178,7 @@ export const TaskContextProvider = (props) => {
 			handleUsers,
 			loggedInUser,
 			setRefetchUsers,
+			tasksDue,
 		}),
 		[
 			dashboard,
@@ -177,6 +192,7 @@ export const TaskContextProvider = (props) => {
 			handleUsers,
 			loggedInUser,
 			setRefetchUsers,
+			tasksDue,
 		]
 	);
 
