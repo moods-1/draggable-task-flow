@@ -173,12 +173,11 @@ function Tasks({ snack }) {
 			/>
 			<div>
 				<FilterButton />
-				{showFilters && (
-					<StateFilters
-						filterObject={filterObject}
-						handleFilterObject={handleFilterObject}
-					/>
-				)}
+				<StateFilters
+					filterObject={filterObject}
+					handleFilterObject={handleFilterObject}
+					showFilters={showFilters}
+				/>
 			</div>
 			<div>
 				<Statistics

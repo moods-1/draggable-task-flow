@@ -95,17 +95,26 @@ export default makeStyles((theme) => ({
 	},
 	// Task Filters
 	filterMain: {
-		width: '100%',
-		height: '50px',
-		display: 'flex',
-		alignItems: 'center',
-		color: '#FFF',
-		fontSize: '14px',
-		background: theme.palette.background.light,
-		marginBottom: '10px',
-		padding: '10px',
-		'& .filter-subject-label': {
-			marginRight: 10,
+		'& .filter-content': {
+			width: '100%',
+			height: '0px',
+			overflow: 'hidden',
+			display: 'flex',
+			alignItems: 'center',
+			color: '#FFF',
+			fontSize: '14px',
+			background: theme.palette.background.light,
+			marginBottom: '10px',
+			paddingLeft: '10px',
+			transition: 'height 300ms',
+			'& .filter-subject-label': {
+				marginRight: 10,
+			},
+		},
+		'& .filter-grow': {
+			padding: '10px',
+			height: '50px',
+			transition: 'height 300ms',
 		},
 	},
 }));
