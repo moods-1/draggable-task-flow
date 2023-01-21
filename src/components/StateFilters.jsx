@@ -13,7 +13,7 @@ function StateFilters({ filterObject, handleFilterObject, showFilters }) {
 						key={label}
 						className='form-check form-check-inline align-items-center'
 					>
-						<label className='form-check-label mr-2' htmlFor='inlineCheckbox1'>
+						<label className='form-check-label mr-2' htmlFor={`inlineCheckbox${label}`}>
 							{label}
 						</label>
 						<input
