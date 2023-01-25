@@ -17,3 +17,4 @@ Server code: https://github.com/moods-1/task-dashboard-server
   - Express JS
   - MongoDB
   - Mongoose
+  - Cloudinary for image storage
