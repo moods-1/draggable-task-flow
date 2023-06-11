@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { MoreVert } from '@mui/icons-material';
 import { TaskContext } from '../context/taskContext';
-import ContentHeader from './ContentHeader';
+import ContentHeader from '../components/ContentHeader';
 import { USERS_TABLE_HEADERS } from '../helpers/constants';
 import useStyles from '../styles/UsersStyles';
-import CustomDataTable from './custom/CustomDataTable';
+import CustomDataTable from '../components/custom/CustomDataTable';
 import { DefaultProfile } from '../images';
-import SearchInput from './custom/SearchInput';
-import UserModal from './Modals/UserModal';
+import SearchInput from '../components/custom/SearchInput';
+import UserModal from '../components/Modals/UserModal';
 import { phoneNumberHyphenator } from '../helpers/helperFunctions';
 
 function Users({ snack }) {

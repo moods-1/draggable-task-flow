@@ -3,16 +3,16 @@ import { Row } from 'reactstrap';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { TaskContext } from '../context/taskContext';
-import TaskModal from './Modals/TaskModal';
-import DroppableColumn from './DroppableColumn';
-import NonDroppableColumn from './NonDroppableColumn';
-import Statistics from './Statistics';
-import ContentHeader from './ContentHeader';
+import TaskModal from '../components/Modals/TaskModal';
+import DroppableColumn from '../components/DroppableColumn';
+import NonDroppableColumn from '../components/NonDroppableColumn';
+import Statistics from '../components/Statistics';
+import ContentHeader from '../components/ContentHeader';
 import useStyles from '../styles/TasksStyles';
 import { moveTaskSameColumn, moveTaskNewColumn } from '../api/columns';
 import { deleteTask } from '../api/tasks';
-import CustomSpinner from './custom/CustomSpinner';
-import StateFilters from './StateFilters';
+import CustomSpinner from '../components/custom/CustomSpinner';
+import StateFilters from '../components/StateFilters';
 
 function Tasks({ snack }) {
 	const classes = useStyles();

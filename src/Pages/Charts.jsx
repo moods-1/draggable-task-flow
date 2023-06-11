@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment-timezone';
-import MultipleCharts from './MultipleCharts';
+import MultipleCharts from '../components/MultipleCharts';
 import { getTasks } from '../api/tasks';
 import useStyles from '../styles/ChartStyles';
 

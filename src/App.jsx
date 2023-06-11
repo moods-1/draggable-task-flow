@@ -1,7 +1,10 @@
 import { useState, useCallback } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import { Header, Sidebar, Tasks, Users, Charts } from './components';
+import { Header, Sidebar } from './components';
+import Users from './Pages/Users';
+import Tasks from './Pages/Tasks';
+import Charts from './Pages/Charts';
 import useStyles from './styles/AppStyles';
 
 function App() {
