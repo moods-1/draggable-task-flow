@@ -1,4 +1,4 @@
-import { PeopleAlt, List } from '@mui/icons-material';
+import { PeopleAlt, List, Leaderboard } from '@mui/icons-material';
 export const routes = [
 	{
 		title: 'TASKS',
@@ -9,5 +9,10 @@ export const routes = [
 		title: 'USERS',
 		path: '/users',
 		icon: <PeopleAlt fontSize='small' />,
+	},
+	{
+		title: 'CHARTS',
+		path: '/charts',
+		icon: <Leaderboard fontSize='small' />,
 	},
 ];

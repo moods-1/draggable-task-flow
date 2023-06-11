@@ -8,7 +8,7 @@ import React, {
 import { useSnackbar } from 'notistack';
 import { getAllUsers } from '../api/users';
 import { getAllColumns } from '../api/columns';
-import { getAllTasks, taksDueSoon } from '../api/tasks';
+import { getTasks, taksDueSoon } from '../api/tasks';
 
 export const TaskContext = createContext({});
 
@@ -111,8 +111,8 @@ export const TaskContextProvider = (props) => {
 	}, [refetchUsers, snack]);
 
 	useEffect(() => {
-		async function getTasks() {
-			const taskData = await getAllTasks();
+		async function getAllTasks() {
+			const taskData = await getTasks(false);
 			const { status, response } = taskData?.data;
 			if (status === 200) {
 				const localTasks = {};
@@ -125,7 +125,7 @@ export const TaskContextProvider = (props) => {
 				snack('There was an error retrieving tasks.', 'error');
 			}
 		}
-		getTasks();
+		getAllTasks();
 	}, [snack]);
 
 	useEffect(() => {

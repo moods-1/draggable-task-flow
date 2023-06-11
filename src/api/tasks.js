@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { SERVER_BASE_URL, SERVER_ROUTES } from '../helpers/constants';
 
-export const getAllTasks = async () => {
+export const getTasks = async (done) => {
 	try {
-		const url = `${SERVER_BASE_URL}${SERVER_ROUTES.TASKS.BASE}`;
+		const url = `${SERVER_BASE_URL}${SERVER_ROUTES.TASKS.BASE}/${done}`;
 		return await axios(url);
 	} catch (error) {
 		return error;

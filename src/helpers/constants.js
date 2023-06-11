@@ -36,9 +36,9 @@ export const USERS_TABLE_HEADERS = [
 export const NUMBER_REGEX = new RegExp(/[^\d]/g);
 
 // Server
-// const PORT = process.env.REACT_APP_SERVER_PORT;
-// export const SERVER_BASE_URL = `http://localhost:${PORT}`;
-export const SERVER_BASE_URL = 'https://task-dashboard-server.vercel.app';
+const PORT = process.env.REACT_APP_SERVER_PORT;
+export const SERVER_BASE_URL = `http://localhost:${PORT}`;
+// export const SERVER_BASE_URL = 'https://task-dashboard-server.vercel.app';
 
 export const SERVER_ROUTES = {
 	USERS: {

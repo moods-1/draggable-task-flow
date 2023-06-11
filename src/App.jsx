@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import { Header, Sidebar, Tasks, Users } from './components';
+import { Header, Sidebar, Tasks, Users, Charts } from './components';
 import useStyles from './styles/AppStyles';
 
 function App() {
@@ -28,6 +28,7 @@ function App() {
 					<Routes>
 						<Route path='/' element={<Tasks snack={snack} />} />
 						<Route path='/users' element={<Users snack={snack} />} />
+						<Route path='/charts' element={<Charts snack={snack} />} />
 					</Routes>
 				</div>
 			</div>
