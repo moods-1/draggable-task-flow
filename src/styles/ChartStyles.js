@@ -3,6 +3,14 @@ export default makeStyles((theme) => ({
 	chartsMain: {
 		width: '100%',
 		padding: '30px',
+		'& .highcharts-data-table': {
+			marginTop: '10px',
+			color: '#FFFFFF',
+			fontSize: '13px',
+		},
+		' & .highcharts-table-caption': {
+			color: '#FFFFFF',
+		},
 	},
 	chartsContent: {
 		width: '100%',
