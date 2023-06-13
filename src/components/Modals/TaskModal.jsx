@@ -51,7 +51,10 @@ const TaskModal = ({
 			setTask((prevState) => ({
 				...prevState,
 				assignee: subjectUser._id,
-				assigneeName: subjectUser.firstName,
+				assigneeName: `${subjectUser.firstName} ${subjectUser.lastName.slice(
+					0,
+					1
+				)}.`,
 				assigneeImage: subjectUser.image,
 			}));
 			setShowUsers(!showUsers);
