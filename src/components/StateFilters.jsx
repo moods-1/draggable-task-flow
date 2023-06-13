@@ -17,7 +17,6 @@ function StateFilters({ filterObject, handleFilterObject, showFilters }) {
 							{label}
 						</label>
 						<input
-							className='form-check-input'
 							type='checkbox'
 							id={`inlineCheckbox${label}`}
 							value={value}

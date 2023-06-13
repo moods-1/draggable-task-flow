@@ -110,6 +110,9 @@ export default makeStyles((theme) => ({
 			'& .filter-subject-label': {
 				marginRight: 10,
 			},
+			'& input': {
+				marginBottom: '-3px',
+			}
 		},
 		'& .filter-grow': {
 			padding: '10px',

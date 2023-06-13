@@ -11,7 +11,6 @@ function DroppableColumn({
 	setShowTaskModal,
 	title,
 }) {
-	console.log('Column data', data)
 	const Quantity = () => {
 		const quantity = data.length;
 		let text = quantity;

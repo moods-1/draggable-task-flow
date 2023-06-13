@@ -51,6 +51,8 @@ const TaskModal = ({
 			setTask((prevState) => ({
 				...prevState,
 				assignee: subjectUser._id,
+				assigneeName: subjectUser.firstName,
+				assigneeImage: subjectUser.image,
 			}));
 			setShowUsers(!showUsers);
 			setUserFilter('');
