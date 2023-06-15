@@ -84,3 +84,5 @@ export const TASK_PRIORITY_FILTERS = [
 		value: '2',
 	},
 ];
+
+export const MIXPANEL_TOKEN = process.env.REACT_APP_MIXPANEL_TOKEN;
