@@ -6,6 +6,7 @@ import cylinder from 'highcharts/modules/cylinder';
 import HC_more from 'highcharts/highcharts-more';
 import HC_exporting from 'highcharts/modules/exporting';
 import HC_export_data from 'highcharts/modules/export-data';
+import { CHART_COLORS } from '../helpers/constants';
 
 HC_more(Highcharts); // required to allow bubble charts
 HC_exporting(Highcharts); // required to export/download images png, jpg, svg
@@ -31,7 +32,10 @@ const MultipleCharts = ({
 		chart: {
 			type: chartType,
 			options3d,
+			borderRadius: 7,	
+			spacing: [20, 20, 20, 20],
 		},
+		colors: CHART_COLORS,
 		title: {
 			text: title || '',
 		},
@@ -51,8 +55,6 @@ const MultipleCharts = ({
 					},
 					chartOptions: {
 						legend: {
-							// align: "left",
-							// verticalAlign: "top",
 							useHTML: true,
 							labelFormatter: function () {
 								return `<p class="reportLegend">${this.name}</p>`;
@@ -65,7 +67,7 @@ const MultipleCharts = ({
 		yAxis: {
 			min: 0,
 			title: {
-				text: 'Tasks',
+				text: '',
 			},
 		},
 		tooltip: {

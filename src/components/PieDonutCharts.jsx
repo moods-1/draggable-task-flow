@@ -6,6 +6,7 @@ import cylinder from 'highcharts/modules/cylinder';
 import HC_more from 'highcharts/highcharts-more';
 import HC_exporting from 'highcharts/modules/exporting';
 import HC_export_data from 'highcharts/modules/export-data';
+import { CHART_COLORS } from '../helpers/constants';
 
 HC_more(Highcharts); // required to allow bubble charts
 HC_exporting(Highcharts); // required to export/download images png, jpg, svg
@@ -27,12 +28,12 @@ const PieDountCharts = ({
 	const options = {
 		chart: {
 			type: chartType,
-			borderColor: '#DDD',
-			borderRadius: 0,
+			borderRadius: 7,
 			borderWidth: 1,
 			spacing: [20, 20, 20, 20],
 			options3d,
 		},
+		colors: CHART_COLORS,
 		title: {
 			text: title || '',
 		},

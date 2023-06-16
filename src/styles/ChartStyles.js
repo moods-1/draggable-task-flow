@@ -21,6 +21,8 @@ export default makeStyles((theme) => ({
 	chartBox: {
 		minWidth: '300px',
 		flex: 1,
+		borderRadius: 7,
+		boxShadow: `3px 3px 10px ${theme.palette.background.light}`,
 	},
 	label: {
 		display: 'inline-block',

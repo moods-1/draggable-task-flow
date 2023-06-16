@@ -76,7 +76,7 @@ const Charts = () => {
 					<PieDonutCharts
 						chartType='pie'
 						seriesData={pieDonutSeriesData}
-						title='Monthly Task Completion'
+						title='All-time Task Completion'
 						subtitle='All users'
 						enable3D={enable3D}
 						enableDataLabels={enableDataLabels}

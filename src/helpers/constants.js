@@ -86,3 +86,5 @@ export const TASK_PRIORITY_FILTERS = [
 ];
 
 export const MIXPANEL_TOKEN = process.env.REACT_APP_MIXPANEL_TOKEN;
+
+export const CHART_COLORS = ['#777777', '#0275d8', '#334', '#00ff77', '#0000ff', '#08c3f7', '#000000'];
