@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core';
 export default makeStyles((theme) => ({
 	headerMain: {
 		width: '100vw',
+		maxWidth: '1920px',
 		height: '60px',
 		padding: '10px 30px',
 		backgroundColor: theme.palette.background.light,
@@ -37,18 +38,18 @@ export default makeStyles((theme) => ({
 				fontSize: '14px',
 				color: '#FFF',
 				background: theme.palette.background.light,
-				'& p':{
+				'& p': {
 					marginBottom: '5px',
 				},
-				'& .edit-div':{
-					width:'100%',
+				'& .edit-div': {
+					width: '100%',
 					border: 'none',
 					borderTop: '1px solid #777',
 					borderRadius: 0,
 					marginTop: '10px',
 					background: theme.palette.background.light,
 					cursor: 'pointer',
-				}
+				},
 			},
 		},
 	},

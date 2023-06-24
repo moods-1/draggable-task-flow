@@ -1,6 +1,14 @@
 import { makeStyles } from '@material-ui/core';
 export default makeStyles((theme) => ({
+	appMain: {
+		width: '100%',
+		backgroundColor: '#000000',
+	},
 	appMainContainer: {
+		maxWidth: '1920px',
+		borderLeft: `1px solid ${theme.palette.background.light}`,
+		borderRight: `1px solid ${theme.palette.background.light}`,
+		margin: 'auto',
 		overflowX: 'hidden',
 		backgroundColor: theme.palette.background.dark,
 		'&::-webkit-scrollbar': {
@@ -19,10 +27,10 @@ export default makeStyles((theme) => ({
 		display: 'flex',
 		flexWrap: 'nowrap',
 	},
-	appContent:{
+	appContent: {
 		flexGrow: 1,
 	},
-	contentHeader:{
+	contentHeader: {
 		padding: '10px 0px',
 		display: 'flex',
 		fontSize: '14px',
@@ -43,5 +51,5 @@ export default makeStyles((theme) => ({
 			height: '30px',
 			background: theme.palette.background.light,
 		},
-	}
+	},
 }));

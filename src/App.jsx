@@ -22,19 +22,21 @@ function App() {
 	);
 
 	return (
-		<div className={classes.appMainContainer}>
-			<Header setHeaderHeight={setHeaderHeight} />
-			<div
-				className={classes.appContainer}
-				style={{ minHeight: `calc(100vh - ${headerHeight}px)` }}
-			>
-				<Sidebar headerHeight={headerHeight} />
-				<div className={classes.appContent}>
-					<Routes>
-						<Route path='/' element={<Tasks snack={snack} />} />
-						<Route path='/users' element={<Users snack={snack} />} />
-						<Route path='/charts' element={<Charts snack={snack} />} />
-					</Routes>
+		<div className={classes.appMain}>
+			<div className={classes.appMainContainer}>
+				<Header setHeaderHeight={setHeaderHeight} />
+				<div
+					className={classes.appContainer}
+					style={{ minHeight: `calc(100vh - ${headerHeight}px)` }}
+				>
+					<Sidebar headerHeight={headerHeight} />
+					<div className={classes.appContent}>
+						<Routes>
+							<Route path='/' element={<Tasks snack={snack} />} />
+							<Route path='/users' element={<Users snack={snack} />} />
+							<Route path='/charts' element={<Charts snack={snack} />} />
+						</Routes>
+					</div>
 				</div>
 			</div>
 		</div>
