@@ -3,7 +3,7 @@ export default makeStyles((theme) => ({
 	headerMain: {
 		width: '100vw',
 		maxWidth: '1920px',
-		height: '60px',
+		height: theme.headerHeight,
 		padding: '10px 30px',
 		backgroundColor: theme.palette.background.light,
 		color: '#FFF',

@@ -28,17 +28,23 @@ const PieDountCharts = ({
 	const options = {
 		chart: {
 			type: chartType,
-			borderRadius: 7,
-			borderWidth: 1,
-			spacing: [20, 20, 20, 20],
 			options3d,
+			borderRadius: 7,
+			spacing: [20, 20, 20, 20],
+			backgroundColor: 'rgba(33,33,44,0.5)',
 		},
 		colors: CHART_COLORS,
 		title: {
 			text: title || '',
+			style: {
+				color: '#FFFFFF',
+			},
 		},
 		subtitle: {
 			text: subtitle || '',
+			style: {
+				color: '#FFFFFF',
+			},
 		},
 		responsive: {
 			rules: [
@@ -52,6 +58,9 @@ const PieDountCharts = ({
 							useHTML: true,
 							labelFormatter: function () {
 								return `<p class="reportLegend">${this.name}</p>`;
+							},
+							itemStyle: {
+								color: '#FFFFFF',
 							},
 						},
 					},
@@ -75,6 +84,7 @@ const PieDountCharts = ({
 					enabled: true,
 					format: '<b>{point.name}</b>: {point.percentage:.1f} %',
 				},
+				borderColor: 'none',
 			},
 		},
 		series: [

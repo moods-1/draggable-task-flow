@@ -4,6 +4,7 @@ export const theme = createTheme({
 	typography: {
 		fontFamily: "'Roboto', sans-serif",
 	},
+	headerHeight: '60px',
 	palette: {
 		primary: {
 			main: '#0275d8',

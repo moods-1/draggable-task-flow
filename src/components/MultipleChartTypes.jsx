@@ -32,19 +32,31 @@ const MultipleCharts = ({
 		chart: {
 			type: chartType,
 			options3d,
-			borderRadius: 7,	
+			borderRadius: 7,
 			spacing: [20, 20, 20, 20],
+			backgroundColor: 'rgba(33,33,44,0.5)',
 		},
 		colors: CHART_COLORS,
 		title: {
 			text: title || '',
+			style: {
+				color: '#FFFFFF',
+			},
 		},
 		subtitle: {
 			text: subtitle || '',
+			style: {
+				color: '#FFFFFF',
+			},
 		},
 		xAxis: {
 			categories: categories,
 			crosshair: true,
+			labels: {
+				style: {
+					color: '#ffffff',
+				},
+			},
 		},
 		responsive: {
 			rules: [
@@ -59,6 +71,9 @@ const MultipleCharts = ({
 							labelFormatter: function () {
 								return `<p class="reportLegend">${this.name}</p>`;
 							},
+							itemStyle: {
+								color: '#FFFFFF',
+							},
 						},
 					},
 				},
@@ -68,6 +83,11 @@ const MultipleCharts = ({
 			min: 0,
 			title: {
 				text: '',
+			},
+			labels: {
+				style: {
+					color: '#ffffff',
+				},
 			},
 		},
 		tooltip: {

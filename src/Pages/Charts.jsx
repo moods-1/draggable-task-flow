@@ -42,10 +42,14 @@ const Charts = () => {
 		<div className={classes.chartsMain}>
 			<div className={classes.selectionBox}>
 				<label className={classes.label}>Enable: &nbsp;</label>
-				<label className={classes.label}>3D</label>
-				<input type='checkbox' onChange={handle3D} />
-				<label className={classes.label}>Data Labels</label>
-				<input type='checkbox' onChange={handleDataLabels} />
+				<label className={classes.label} htmlFor='input-3d'>
+					3D
+				</label>
+				<input type='checkbox' id='input-3d' onChange={handle3D} />
+				<label className={classes.label} htmlFor='data-labels'>
+					Data Labels
+				</label>
+				<input type='checkbox' id='data-labels' onChange={handleDataLabels} />
 			</div>
 			<div className={classes.chartsContent}>
 				<div className={classes.chartBox}>

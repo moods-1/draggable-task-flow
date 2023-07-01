@@ -23,7 +23,7 @@ export default makeStyles((theme) => ({
 			minHeight: '200px',
 			border: 'none',
 			borderRadius: '0px',
-			backgroundColor: '#FFF',
+			background: 'rgba(33,33,44, 0.8)',
 			'& .droppable-column-head': {
 				position: 'relative',
 				padding: 20,
@@ -50,7 +50,7 @@ export default makeStyles((theme) => ({
 			height: '100%',
 		},
 		'& .dragging-over': {
-			backgroundColor: '#daedf4',
+			background: '#334',
 		},
 	},
 	taskContent: {
@@ -67,7 +67,6 @@ export default makeStyles((theme) => ({
 		padding: '10px 20px',
 		textAlign: 'center',
 		borderRight: '5px solid #fff',
-		boxShadow: '0px 0px 8px #DDD',
 		backgroundColor: '#fff',
 		fontSize: '15px',
 		'& .task-header': {
@@ -86,6 +85,9 @@ export default makeStyles((theme) => ({
 		},
 		'& .MuiSvgIcon-root': {
 			cursor: 'pointer',
+		},
+		'&:hover': {
+			boxShadow: '0px 0px 5px #aaa',
 		},
 	},
 	profile: {
@@ -112,7 +114,7 @@ export default makeStyles((theme) => ({
 			},
 			'& input': {
 				marginBottom: '-3px',
-			}
+			},
 		},
 		'& .filter-grow': {
 			padding: '10px',
