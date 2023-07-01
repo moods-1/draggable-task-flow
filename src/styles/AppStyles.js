@@ -3,6 +3,7 @@ export default makeStyles((theme) => ({
 	appMain: {
 		width: '100%',
 		backgroundColor: '#000000',
+		backgroundImage: theme.palette.background.pattern,
 	},
 	appMainContainer: {
 		maxWidth: '1920px',
@@ -10,7 +11,7 @@ export default makeStyles((theme) => ({
 		borderRight: `1px solid ${theme.palette.background.light}`,
 		margin: 'auto',
 		overflowX: 'hidden',
-		backgroundColor: theme.palette.background.dark,
+		backgroundColor: 'none',
 		'&::-webkit-scrollbar': {
 			width: 10,
 			backgroundColor: '#05014a',

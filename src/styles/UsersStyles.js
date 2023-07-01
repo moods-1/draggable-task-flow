@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
 		width: '100%',
 		height: '100%',
 		padding: '0px 20px 20px 20px',
-		backgroundColor: theme.palette.background.dark,
+		backgroundColor: 'none',
 		'& p': {
 			padding: 0,
 			margin: 0,

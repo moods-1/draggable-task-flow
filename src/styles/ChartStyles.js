@@ -4,8 +4,6 @@ export default makeStyles((theme) => ({
 		width: '100%',
 		padding: '30px',
 		minHeight: `calc(100vh - ${theme.headerHeight})`,
-		backgroundColor: '#000000',
-		backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cg fill='%23333344' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E")`,
 		'& .highcharts-data-table': {
 			marginTop: '10px',
 			color: '#FFFFFF',
