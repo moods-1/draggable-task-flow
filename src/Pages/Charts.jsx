@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import MultipleCharts from '../components/MultipleChartTypes';
-import PieDonutCharts from '../components/PieDonutCharts';
+
+import MultipleChart from '../components/MultipleChart';
+import PieChart from '../components/PieChart';
 import { getTasks } from '../api/tasks';
 import useStyles from '../styles/ChartStyles';
 import {
@@ -12,17 +13,8 @@ const Charts = () => {
 	const [multipleChartsCategories, setMultipleChartsCategories] = useState([]);
 	const [multipleChartsSeries, setMultipleChartsSeries] = useState([]);
 	const [pieDonutSeriesData, setPieDonutSeriesData] = useState([]);
-	const [enable3D, setEnable3D] = useState(false);
-	const [enableDataLabels, setEnableDataLabels] = useState(false);
+
 	const classes = useStyles();
-
-	const handle3D = (e) => {
-		setEnable3D(e.target.checked);
-	};
-
-	const handleDataLabels = (e) => {
-		setEnableDataLabels(e.target.checked);
-	};
 
 	useEffect(() => {
 		const fetchTasks = async () => {
@@ -40,52 +32,12 @@ const Charts = () => {
 
 	return (
 		<div className={classes.chartsMain}>
-			<div className={classes.selectionBox}>
-				<label className={classes.label}>Enable: &nbsp;</label>
-				<label className={classes.label} htmlFor='input-3d'>
-					3D
-				</label>
-				<input type='checkbox' id='input-3d' onChange={handle3D} />
-				<label className={classes.label} htmlFor='data-labels'>
-					Data Labels
-				</label>
-				<input type='checkbox' id='data-labels' onChange={handleDataLabels} />
-			</div>
 			<div className={classes.chartsContent}>
-				<div className={classes.chartBox}>
-					<MultipleCharts
-						chartType='column'
-						categories={multipleChartsCategories}
-						series={multipleChartsSeries}
-						title='Monthly Task Complete'
-						subtitle='All users'
-						enable3D={enable3D}
-						enableDataLabels={enableDataLabels}
-						stacking={true}
-					/>
-				</div>
-				<div className={classes.chartBox}>
-					<MultipleCharts
-						chartType='column'
-						categories={multipleChartsCategories}
-						series={multipleChartsSeries}
-						title='Monthly Task Completion'
-						subtitle='All users'
-						enable3D={enable3D}
-						enableDataLabels={enableDataLabels}
-						stacking={false}
-					/>
-				</div>
-				<div className={classes.chartBox}>
-					<PieDonutCharts
-						chartType='pie'
-						seriesData={pieDonutSeriesData}
-						title='All-time Task Completion'
-						subtitle='All users'
-						enable3D={enable3D}
-						enableDataLabels={enableDataLabels}
-					/>
-				</div>
+				<MultipleChart
+					series={multipleChartsSeries}
+					categories={multipleChartsCategories}
+				/>
+				<PieChart series={pieDonutSeriesData} />
 			</div>
 		</div>
 	);

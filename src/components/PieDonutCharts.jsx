@@ -16,10 +16,12 @@ cylinder(Highcharts);
 
 const PieDountCharts = ({
 	chartType,
+	donut,
 	seriesData,
 	title,
 	subtitle,
 	enable3D,
+	enableDataLabels,
 }) => {
 	const options3d = enable3D
 		? { enabled: true, alpha: 15, beta: 10, depth: 50, viewDistance: 25 }
@@ -29,7 +31,8 @@ const PieDountCharts = ({
 		chart: {
 			type: chartType,
 			options3d,
-			borderRadius: 7,
+			borderRadius: 0,
+			borderWidth: 0,
 			spacing: [20, 20, 20, 20],
 			backgroundColor: 'rgba(33,33,44,0.5)',
 		},
@@ -81,10 +84,9 @@ const PieDountCharts = ({
 				allowPointSelect: true,
 				cursor: 'pointer',
 				dataLabels: {
-					enabled: true,
+					enabled: enableDataLabels,
 					format: '<b>{point.name}</b>: {point.percentage:.1f} %',
 				},
-				borderColor: 'none',
 			},
 		},
 		series: [
@@ -92,7 +94,7 @@ const PieDountCharts = ({
 				type: 'pie',
 				name: '',
 				// 60% for donut type
-				innerSize: `${chartType === 'pie' ? '0%' : '60%'}`,
+				innerSize: `${donut ? '60%' : '0%'}`,
 				data: seriesData,
 				colorByPoint: true,
 			},

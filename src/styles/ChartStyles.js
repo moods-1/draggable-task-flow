@@ -22,9 +22,24 @@ export default makeStyles((theme) => ({
 	chartBox: {
 		minWidth: '480px',
 		maxWidth: '480px',
+		padding: 20,
+		display: 'flex',
+		flexDirection: 'column',
 		flex: 1,
 		borderRadius: 5,
-		boxShadow: `0px 0px 5px ${theme.palette.secondary.light}`,
+		'& .chart-head': {
+			display: 'flex',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+			padding: '20px',
+			background: theme.palette.background.light,
+			'& select': {
+				maxWidth: '200px',
+				height: 30,
+				padding: '0 0.75rem',
+				outlineStyle: 'none',
+			},
+		},
 	},
 	label: {
 		display: 'inline-block',
@@ -34,7 +49,6 @@ export default makeStyles((theme) => ({
 		display: 'flex',
 		alignItems: 'center',
 		gap: '5px',
-		marginBottom: '10px',
 		fontSize: '14px',
 		'& *': {
 			padding: 0,

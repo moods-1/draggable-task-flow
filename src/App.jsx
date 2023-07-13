@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { Header, Sidebar } from './components';
-import { Mixpanel } from './components/Mixpanel';
+// import { Mixpanel } from './components/Mixpanel';
 import Users from './Pages/Users';
 import Tasks from './Pages/Tasks';
 import Charts from './Pages/Charts';
@@ -12,7 +12,7 @@ function App() {
 	const classes = useStyles();
 	const { enqueueSnackbar } = useSnackbar();
 	const [headerHeight, setHeaderHeight] = useState(0);
-	Mixpanel.track('Task dashboard site accessed', { action: 'Site accessed.' });
+	//Mixpanel.track('Task dashboard site accessed', { action: 'Task dashboard site accessed.' });
 
 	const snack = useCallback(
 		(message, type) => {

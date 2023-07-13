@@ -32,7 +32,7 @@ const MultipleCharts = ({
 		chart: {
 			type: chartType,
 			options3d,
-			borderRadius: 7,
+			borderRadius: 0,
 			spacing: [20, 20, 20, 20],
 			backgroundColor: 'rgba(33,33,44,0.5)',
 		},
@@ -100,6 +100,30 @@ const MultipleCharts = ({
 			useHTML: true,
 		},
 		plotOptions: {
+			packedbubble: {
+				minSize: '60%',
+				maxSize: '120%',
+				zMin: 0,
+				zMax: 1000,
+				layoutAlgorithm: {
+					splitSeries: false,
+					gravitationalConstant: 0.02,
+				},
+				dataLabels: {
+					enabled: true,
+					format: '{point.name}',
+					filter: {
+						property: 'y',
+						operator: '>',
+						value: 250,
+					},
+					style: {
+						color: 'black',
+						textOutline: 'none',
+						fontWeight: 'normal',
+					},
+				},
+			},
 			column: {
 				pointPadding: 0.2,
 				borderWidth: 0,
@@ -110,9 +134,16 @@ const MultipleCharts = ({
 			},
 			bar: {
 				borderRadius: '50%',
+				borderColor: 'none',
 				dataLabels: {
 					enabled: enableDataLabels,
 				},
+			},
+			columnpyramid: {
+				borderColor: 'none',
+			},
+			cylinder: {
+				borderColor: 'none',
 			},
 		},
 		series,

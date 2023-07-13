@@ -96,3 +96,18 @@ export const CHART_COLORS = [
 	'#08c3f7',
 	'#000000',
 ];
+
+export const CHART_OPTIONS_MULTIPLE = [
+	{ label: 'Bar', value: 'bar' },
+	{ label: 'Bubble', value: 'bubble' },
+	{ label: 'Bubble (Packed)', value: 'packedbubble' },
+	{ label: 'Column', value: 'column' },
+	{ label: 'Column (Stacked)', value: 'column', stacked: true },
+	{ label: 'Column (Pyramid)', value: 'columnpyramid' },
+	{ label: 'Line', value: 'line' },
+];
+
+export const CHART_OPTIONS_PIE = [
+	{ label: 'Pie', value: 'pie' },
+	{ label: 'Donut', value: 'donut' },
+];
