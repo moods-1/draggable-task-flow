@@ -31,6 +31,7 @@ const TaskModal = ({
 	const [task, setTask] = useState({});
 	const [localUsers, setLocalUsers] = useState([]);
 	const [originalAssignee, setOriginalAssignee] = useState('');
+	const [movedBy, setMovedBy] = useState('');
 	const { users, setRefetchUsers, handleNewTask, loggedInUser, isAdmin } =
 		useContext(TaskContext);
 	const assignee = localUsers.find((u) => u._id === task?.assignee);
@@ -111,8 +112,11 @@ const TaskModal = ({
 		if (taskType === 'edit') {
 			setOriginalAssignee(currentTask.assignee);
 			setTask(currentTask);
+			const { lastMovedBy } = currentTask;
+			setMovedBy('moverName' in lastMovedBy ? lastMovedBy.moverName : 'N/A');
 		} else {
 			setTask({ state: 'To Do', complete: false, assignor: loggedInUser._id });
+			setMovedBy('');
 		}
 	}, [currentTask, taskType, loggedInUser._id]);
 
@@ -323,7 +327,22 @@ const TaskModal = ({
 									/>
 								</LocalizationProvider>
 							</Col>
-							<Col>{''}</Col>
+							<Col>
+								{taskType === 'edit' ? (
+									<TextField
+										label='Last moved by'
+										size='small'
+										variant='standard'
+										fullWidth
+										// disabled added for UI uniformity
+										disabled={!isAdmin}
+										readOnly
+										value={movedBy}
+									/>
+								) : (
+									' '
+								)}
+							</Col>
 						</Row>
 						<Row className='mb-3 mx-0'>
 							<Col>
