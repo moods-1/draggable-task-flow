@@ -1,28 +1,26 @@
-import axios from 'axios';
+import { mainRequest } from './main';
 import { SERVER_BASE_URL, SERVER_ROUTES } from '../helpers/constants';
 
 export const getAllColumns = async () => {
-	try {
-		const url = `${SERVER_BASE_URL}${SERVER_ROUTES.COLUMNS.BASE}`;
-		return await axios(url);
-	} catch (error) {
-		return error;
-	}
+	const url = `${SERVER_BASE_URL}${SERVER_ROUTES.COLUMNS.BASE}`;
+	const method = 'get';
+	return await mainRequest(method, url, {});
+};
+
+export const getCompanyColumns = async (companyId) => {
+	const url = `${SERVER_BASE_URL}${SERVER_ROUTES.COLUMNS.BY_COMPANY_ID}/${companyId}`;
+	const method = 'get';
+	return await mainRequest(method, url, {});
 };
 
 export const moveTaskSameColumn = async (body) => {
-	try {
-		const url = `${SERVER_BASE_URL}${SERVER_ROUTES.COLUMNS.MOVE_TASK_INTERNAL}`;
-		return await axios.patch(url, body);
-	} catch (error) {
-		return error;
-	}
+	const url = `${SERVER_BASE_URL}${SERVER_ROUTES.COLUMNS.MOVE_TASK_INTERNAL}`;
+	const method = 'patch';
+	return await mainRequest(method, url, body);
 };
+
 export const moveTaskNewColumn = async (body) => {
-	try {
-		const url = `${SERVER_BASE_URL}${SERVER_ROUTES.COLUMNS.MOVE_TASK_EXTERNAL}`;
-		return await axios.patch(url, body);
-	} catch (error) {
-		return error;
-	}
+	const url = `${SERVER_BASE_URL}${SERVER_ROUTES.COLUMNS.MOVE_TASK_EXTERNAL}`;
+	const method = 'patch';
+	return await mainRequest(method, url, body);
 };

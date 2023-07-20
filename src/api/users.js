@@ -1,29 +1,32 @@
-import axios from 'axios';
+import { mainRequest } from './main';
 import { SERVER_BASE_URL, SERVER_ROUTES } from '../helpers/constants';
 
+export const userLogin = async (body) => {
+	const url = `${SERVER_BASE_URL}${SERVER_ROUTES.USERS.LOGIN}`;
+	const method = 'post';
+	return await mainRequest(method, url, body);
+};
+
 export const getAllUsers = async () => {
-	try {
-		const url = `${SERVER_BASE_URL}${SERVER_ROUTES.USERS.BASE}`;
-		return await axios(url);
-	} catch (error) {
-		return error;
-	}
+	const url = `${SERVER_BASE_URL}${SERVER_ROUTES.USERS.BASE}`;
+	const method = 'get';
+	return await mainRequest(method, url, {});
+};
+
+export const getCompanyUsers = async (companyId) => {
+	const url = `${SERVER_BASE_URL}${SERVER_ROUTES.USERS.BY_COMPANY_ID}/${companyId}`;
+	const method = 'get';
+	return await mainRequest(method, url, {});
 };
 
 export const updateUser = async (body) => {
-	try {
-		const url = `${SERVER_BASE_URL}${SERVER_ROUTES.USERS.BASE}`;
-		return await axios.patch(url, body);
-	} catch (error) {
-		return error;
-	}
+	const url = `${SERVER_BASE_URL}${SERVER_ROUTES.USERS.UPDATE_USER}`;
+	const method = 'patch';
+	return await mainRequest(method, url, body);
 };
 
 export const addUser = async (body) => {
-	try {
-		const url = `${SERVER_BASE_URL}${SERVER_ROUTES.USERS.BASE}`;
-		return await axios.post(url, body);
-	} catch (error) {
-		return error;
-	}
+	const url = `${SERVER_BASE_URL}${SERVER_ROUTES.USERS.ADD_USER}`;
+	const method = 'post';
+	return await mainRequest(method, url, body);
 };

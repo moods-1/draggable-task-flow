@@ -10,6 +10,11 @@ export default makeStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
+		'& .header-brand-logo': {
+			width: '40px',
+			height: '40px',
+			overflow: 'hidden',
+		},
 		'& p': {
 			padding: 0,
 			margin: 0,
@@ -28,6 +33,7 @@ export default makeStyles((theme) => ({
 				maxWidth: 200,
 				height: 'auto',
 				minHeight: 60,
+				listStyle: 'none',
 				border: '1px solid #777',
 				borderTop: 'none',
 				position: 'absolute',
@@ -38,17 +44,14 @@ export default makeStyles((theme) => ({
 				fontSize: '14px',
 				color: '#FFF',
 				background: theme.palette.background.light,
-				'& p': {
+				'& li': {
 					marginBottom: '5px',
 				},
-				'& .edit-div': {
-					width: '100%',
-					border: 'none',
-					borderTop: '1px solid #777',
-					borderRadius: 0,
-					marginTop: '10px',
-					background: theme.palette.background.light,
+				'& .action': {
 					cursor: 'pointer',
+					'&:hover': {
+						color: theme.palette.primary.main,
+					},
 				},
 			},
 		},

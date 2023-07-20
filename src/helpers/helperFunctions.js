@@ -100,3 +100,88 @@ export const formatPieDonutChartData = (data) => {
 	});
 	return { pieDonutData: userData };
 };
+
+export const storeUser = (data) => {
+	localStorage.setItem('user', JSON.stringify(data));
+};
+
+export const clearUser = async () => {
+	localStorage.removeItem('user');
+};
+
+export const clearStorage = () => {
+	localStorage.clear();
+};
+
+export function unauthorizedLogout() {
+	clearStorage();
+	window.location.href = '/auth';
+}
+
+export const getStoredUser = () => {
+	if (localStorage.getItem('user')) {
+		return JSON.parse(localStorage.getItem('user'));
+	}
+	return null;
+};
+
+// Token
+export const setToken = (data) => {
+	localStorage.setItem('token', data);
+};
+
+export const getToken = () => {
+	if (localStorage.getItem('token')) {
+		return localStorage.getItem('token');
+	}
+	return '';
+};
+
+// Logged in
+export const setLoggedIn = (state) => {
+	localStorage.setItem('loggedIn', state);
+};
+
+export const getLoggedIn = () => {
+	if (localStorage.getItem('loggedIn')) {
+		const state = localStorage.getItem('loggedIn');
+		return state === 'true' ? true : false;
+	}
+	return false;
+};
+
+// Admin
+export const setIsAdmin = (state) => {
+	localStorage.setItem('isAdmin', state);
+};
+
+export const getIsAdmin = () => {
+	if (localStorage.getItem('isAdmin')) {
+		const state = localStorage.getItem('isAdmin');
+		return state === 'true' ? true : false;
+	}
+	return false;
+};
+
+// CompanyId
+export const setCompanyId = (id) => {
+	localStorage.setItem('companyId', id);
+};
+
+export const getCompanyId = () => {
+	if (localStorage.getItem('companyId')) {
+		return localStorage.getItem('companyId');
+	}
+	return '';
+};
+
+export const handleLogin = (data) => {
+	const { token, companyId, roles } = data;
+	if (roles && typeof roles === 'object') {
+		setIsAdmin(roles.includes('admin'));
+	}
+	storeUser(data);
+	setToken(token);
+	setCompanyId(companyId);
+	setLoggedIn(true);
+};

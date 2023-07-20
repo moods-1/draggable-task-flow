@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core';
 export default makeStyles((theme) => ({
 	appMain: {
 		width: '100%',
+		minHeight: '100vh',
 		backgroundColor: '#000000',
 		backgroundImage: theme.palette.background.pattern,
 	},
@@ -51,6 +52,9 @@ export default makeStyles((theme) => ({
 			minWidth: '110px',
 			height: '30px',
 			background: theme.palette.background.light,
+			'&:disabled': {
+				opacity: 0.8,
+			},
 		},
 	},
 }));

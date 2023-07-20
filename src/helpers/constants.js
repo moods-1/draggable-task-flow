@@ -36,22 +36,32 @@ export const USERS_TABLE_HEADERS = [
 export const NUMBER_REGEX = new RegExp(/[^\d]/g);
 
 // Server
-// const PORT = process.env.REACT_APP_SERVER_PORT;
-// export const SERVER_BASE_URL = `http://localhost:${PORT}`;
+//const PORT = process.env.REACT_APP_SERVER_PORT;
+//export const SERVER_BASE_URL = `http://localhost:${PORT}`;
 export const SERVER_BASE_URL = 'https://task-dashboard-server.vercel.app';
 
 export const SERVER_ROUTES = {
 	USERS: {
-		BASE: '/users',
+		BASE: '/users/by/companyId',
+		BY_COMPANY_ID: '/users/by/companyId',
+		LOGIN: '/users/login',
+		ADD_USER: '/users/add-user',
+		UPDATE_USER:'/users/update-user',
 	},
 	COLUMNS: {
 		BASE: '/columns',
+		BY_COMPANY_ID: '/columns/by/companyId',
 		MOVE_TASK_INTERNAL: '/columns/move-internal',
 		MOVE_TASK_EXTERNAL: '/columns/move-external',
 	},
 	TASKS: {
 		BASE: '/tasks',
+		BY_COMPANY_ID:'/tasks/by/companyId',
 		DUE_SOON: '/tasks/tasks-due-soon',
+	},
+	COMPANIES: {
+		BASE: '/companies',
+		BY_COMPANY_ID: '/companies/by/companyId',
 	},
 };
 

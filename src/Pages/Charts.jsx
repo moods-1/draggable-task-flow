@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 import MultipleChart from '../components/MultipleChart';
 import PieChart from '../components/PieChart';
-import { getTasks } from '../api/tasks';
+import { getCompanyTasks } from '../api/tasks';
 import useStyles from '../styles/ChartStyles';
 import {
 	formatMultiChartData,
 	formatPieDonutChartData,
+	getCompanyId,
 } from '../helpers/helperFunctions';
 
 const Charts = () => {
@@ -18,8 +19,9 @@ const Charts = () => {
 
 	useEffect(() => {
 		const fetchTasks = async () => {
-			const result = await getTasks(true);
-			const { response } = result?.data;
+			const companyId = getCompanyId();
+			const result = await getCompanyTasks(true, companyId);
+			const { response } = result;
 			const { multiCategories, multiDataSeries } =
 				formatMultiChartData(response);
 			const { pieDonutData } = formatPieDonutChartData(response);

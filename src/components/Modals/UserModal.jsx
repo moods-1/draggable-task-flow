@@ -1,9 +1,4 @@
-import React, {
-	useState,
-	useEffect,
-	useRef,
-	useContext,
-} from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
 	Modal,
 	ModalBody,
@@ -15,9 +10,9 @@ import {
 } from 'reactstrap';
 import ModalTextField from './ModalTextField';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { DefaultProfile } from '../../images';
+import { DefaultProfile } from '../../assets/images';
 import useStyles from '../../styles/TaskUserModalStyles';
-import { makeRandomId } from '../../helpers/helperFunctions';
+import { makeRandomId, storeUser } from '../../helpers/helperFunctions';
 import { NUMBER_REGEX } from '../../helpers/constants';
 import { TaskContext } from '../../context/taskContext';
 import UserTaskList from '../UserTaskList';
@@ -25,8 +20,12 @@ import { addUser, updateUser } from '../../api/users';
 
 const newId = makeRandomId(8);
 const acceptableFiles = ['png', 'jpg', 'jpeg'];
+const textProps = {
+	maxLength: 30,
+	minLength: 2,
+};
 
-function TaskModal({ open, toggle, currentUser, setCurrentUser, type, snack }) {
+function UserModal({ open, toggle, currentUser, setCurrentUser, type }) {
 	const classes = useStyles();
 	const id = currentUser?.id || newId;
 	const [user, setUser] = useState({});
@@ -34,7 +33,8 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type, snack }) {
 	const [showTasksTable, setShowTasksTable] = useState(false);
 	const [tasksAssigned, setTasksAssigned] = useState([]);
 	const hiddenFileInput = useRef();
-	const { handleUsers, tasks } = useContext(TaskContext);
+	const { handleUsers, tasks, snack } = useContext(TaskContext);
+	const passwordRequired = user?.password?.length > 0 || type === 'new';
 
 	const handleUser = (value, field) => {
 		setUser((prevState) => ({
@@ -85,16 +85,21 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type, snack }) {
 		}
 		if (type === 'new') {
 			const result = await addUser(user);
-			const {status, reponse} = result.data;
-			if(status===200){
-				handleUsers(reponse, type);
+			const { status, response } = result;
+			if (status === 200) {
+				storeUser(response)
+				handleUsers(response, type);
 				toggle();
 				return snack(`${user.firstName} added successfully!`, 'success');
 			}
 		} else {
+			const { image } = currentUser;
+			const newImage = user.image !== image;
+			user.newImage = newImage;
 			const result = await updateUser(user);
-			const { status } = result.data;
+			const { status } = result;
 			if (status === 200) {
+				storeUser(user)
 				handleUsers(user, type);
 				toggle();
 				return snack(`${user.firstName} updated successfully!`, 'success');
@@ -114,7 +119,7 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type, snack }) {
 
 	useEffect(() => {
 		if (type === 'new') {
-			setUser({  assignedTasks: [] });
+			setUser({ assignedTasks: [] });
 		} else setUser(currentUser);
 	}, [currentUser, id, type]);
 
@@ -175,33 +180,23 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type, snack }) {
 						<Col>
 							<ModalTextField
 								label='First Name'
-								inputProps={{
-									maxLength: 30,
-									minLength: 2,
-									style: {
-										fontSize: 15,
-									},
-								}}
+								inputProps={textProps}
 								value={user?.firstName}
 								onChange={(e) => handleUser(e.target.value, 'firstName')}
+								required
 							/>
 						</Col>
 						<Col>
 							<ModalTextField
 								label='Last Name'
-								inputProps={{
-									maxLength: 30,
-									minLength: 2,
-									style: {
-										fontSize: 15,
-									},
-								}}
+								inputProps={textProps}
 								value={user?.lastName}
 								onChange={(e) => handleUser(e.target.value, 'lastName')}
+								required
 							/>
 						</Col>
 					</Row>
-					<Row className='mb-5 mx-0'>
+					<Row className='mb-4 mx-0'>
 						<Col>
 							<ModalTextField
 								label='Email'
@@ -214,6 +209,7 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type, snack }) {
 									},
 								}}
 								value={user?.email}
+								required
 								onChange={(e) => handleUser(e.target.value, 'email')}
 							/>
 						</Col>
@@ -228,11 +224,28 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type, snack }) {
 										fontSize: 15,
 									},
 								}}
+								required
 								onChange={(e) =>
 									handlePhoneNumber(e.target.value, 'phoneNumber')
 								}
 							/>
 						</Col>
+					</Row>
+					<Row className='mb-5 mx-0'>
+						<Col>
+							<ModalTextField
+								label='Password'
+								type='password'
+								value={user?.password}
+								required={passwordRequired}
+								inputProps={{
+									maxLength: 20,
+									minLength: 6,
+								}}
+								onChange={(e) => handleUser(e.target.value, 'password')}
+							/>
+						</Col>
+						<Col />
 					</Row>
 					{showTasks && (
 						<Row className='mb-4 mx-0' style={{ marginTop: '-20px' }}>
@@ -281,4 +294,4 @@ function TaskModal({ open, toggle, currentUser, setCurrentUser, type, snack }) {
 	);
 }
 
-export default TaskModal;
+export default UserModal;

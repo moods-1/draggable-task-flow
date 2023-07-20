@@ -33,6 +33,11 @@ export default makeStyles((theme) => ({
 				'& td': {
 					verticalAlign: 'middle',
 				},
+				'& .more-button': {
+					border: 'none',
+					background: 'transparent',
+					outlineStyle: 'none',
+				}
 			},
 			'& img': {
 				borderRadius: '50%',

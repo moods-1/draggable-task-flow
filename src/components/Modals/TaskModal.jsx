@@ -31,10 +31,11 @@ const TaskModal = ({
 	const [task, setTask] = useState({});
 	const [localUsers, setLocalUsers] = useState([]);
 	const [originalAssignee, setOriginalAssignee] = useState('');
-	const { users, setRefetchUsers, handleNewTask, loggedInUser } =
+	const { users, setRefetchUsers, handleNewTask, loggedInUser, isAdmin } =
 		useContext(TaskContext);
 	const assignee = localUsers.find((u) => u._id === task?.assignee);
 	const assignor = localUsers.find((u) => u._id === task?.assignor);
+	let titlePrefix;
 
 	const filteredUsers = localUsers.filter(
 		(u) =>
@@ -129,6 +130,12 @@ const TaskModal = ({
 
 	const taskPriority = task.priority === 0 ? '0' : task.priority;
 
+	if (taskType === 'new') {
+		titlePrefix = 'New';
+	} else {
+		titlePrefix = isAdmin ? 'Edit' : 'View';
+	}
+
 	return (
 		<Modal
 			isOpen={open}
@@ -138,7 +145,7 @@ const TaskModal = ({
 			size='md'
 		>
 			<ModalHeader className={classes.modalHeader}>
-				<p>{taskType === 'new' ? 'New' : 'Edit'} Task</p>
+				<p>{titlePrefix} Task</p>
 			</ModalHeader>
 			<ModalBody className={classes.modalBody}>
 				<form onSubmit={handleSubmit}>
@@ -154,6 +161,7 @@ const TaskModal = ({
 								className='shadow-none'
 								size='sm'
 								color='link'
+								disabled={!isAdmin}
 								style={{ textDecoration: 'none', color: showUsers && '#F00' }}
 								onClick={() => setShowUsers(!showUsers)}
 							>
@@ -201,6 +209,7 @@ const TaskModal = ({
 							<Col>
 								<ModalTextField
 									label='Task Title'
+									disabled={!isAdmin}
 									onChange={(e) => handleChange(e.target.value, 'taskTitle')}
 									inputProps={{
 										maxLength: 40,
@@ -219,6 +228,7 @@ const TaskModal = ({
 									label='Assignor'
 									select
 									size='small'
+									disabled={!isAdmin}
 									variant='standard'
 									fullWidth
 									value={assignor?._id || ''}
@@ -246,6 +256,7 @@ const TaskModal = ({
 									label='Priority'
 									select
 									size='small'
+									disabled={!isAdmin}
 									variant='standard'
 									fullWidth
 									value={taskPriority || ''}
@@ -280,9 +291,15 @@ const TaskModal = ({
 										label='Due Date'
 										inputFormat='DD-MMM-YYYY'
 										value={task.dueDate || new Date()}
+										disabled={!isAdmin}
 										onChange={(value) => handleChange(value?.$d, 'dueDate')}
 										renderInput={(params) => (
-											<TextField variant='standard' required {...params} />
+											<TextField
+												variant='standard'
+												disabled={!isAdmin}
+												required
+												{...params}
+											/>
 										)}
 										disableMaskedInput
 										InputProps={{
@@ -314,6 +331,7 @@ const TaskModal = ({
 									className='cancel-button'
 									block
 									size='sm'
+									disabled={!isAdmin}
 									onClick={handleCancel}
 								>
 									Cancel
@@ -325,6 +343,7 @@ const TaskModal = ({
 										color='danger'
 										block
 										size='sm'
+										disabled={!isAdmin}
 										onClick={() => handleDelete(task)}
 									>
 										Delete task
@@ -332,7 +351,13 @@ const TaskModal = ({
 								</Col>
 							)}
 							<Col>
-								<Button color='primary' block size='sm' type='submit'>
+								<Button
+									color='primary'
+									block
+									size='sm'
+									type='submit'
+									disabled={!isAdmin}
+								>
 									Save changes
 								</Button>
 							</Col>

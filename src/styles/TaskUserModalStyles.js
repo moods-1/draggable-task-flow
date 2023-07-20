@@ -7,6 +7,18 @@ export default makeStyles((theme) => ({
 		'& .cancel-button': {
 			background: theme.palette.background.light,
 		},
+		'& .MuiTextField-root': {
+			'& .Mui-disabled': {
+				opacity: 1,
+				color: '#555 !important',
+			},
+			'& select, input, label': {
+				'&:disabled': {
+					opacity: 1,
+					'-webkit-text-fill-color': '#555',
+				},
+			},
+		},
 	},
 	modalHeader: {
 		color: theme.palette.white,
@@ -63,12 +75,12 @@ export default makeStyles((theme) => ({
 				padding: '0px 10px',
 				boxShadow: '0px 0px 5px #DDD',
 			},
-			'& .user-selection-empty-message':{
+			'& .user-selection-empty-message': {
 				width: '100%',
 				height: '100%',
 				display: 'grid',
 				placeItems: 'center',
-			}
+			},
 		},
 		'& .MuiButtonBase-root': {
 			'&:hover': {

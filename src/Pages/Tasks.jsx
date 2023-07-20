@@ -13,6 +13,7 @@ import { moveTaskSameColumn, moveTaskNewColumn } from '../api/columns';
 import { deleteTask } from '../api/tasks';
 import CustomSpinner from '../components/custom/CustomSpinner';
 import StateFilters from '../components/StateFilters';
+import { getIsAdmin } from '../helpers/helperFunctions';
 
 function Tasks({ snack }) {
 	const classes = useStyles();
@@ -24,8 +25,9 @@ function Tasks({ snack }) {
 	const [taskType, setTaskType] = useState('edit');
 	const [filterObject, setFilterObject] = useState({});
 	const [showFilters, setShowFilters] = useState(false);
-	const { tasks, setTasks, tasksDue, columns, handleColumns } =
+	const { tasks, setTasks, tasksDue, columns, handleColumns, loggedInUser } =
 		useContext(TaskContext);
+	const admin = getIsAdmin();
 
 	const filteredTasks = Object.values(tasks).filter(
 		(t) => t.state in filterObject || !Object.keys(filterObject).length
@@ -61,6 +63,11 @@ function Tasks({ snack }) {
 		const finish = columns[destination.droppableId];
 		let localColumns = { ...columns };
 		const [sourceTaskId] = start.taskIds.splice(source.index, 1);
+		const localTasks = { ...tasks };
+		const mover = {
+			moverId: loggedInUser._id,
+			moverName: `${loggedInUser.firstName} ${loggedInUser.lastName}`,
+		};
 
 		if (start === finish) {
 			// Same column local update
@@ -73,6 +80,7 @@ function Tasks({ snack }) {
 				sourceIndex: source.index,
 				destinationIndex: destination.index,
 				destinationId: destination.droppableId,
+				mover,
 			};
 			await moveTaskSameColumn(requestBody);
 		} else {
@@ -91,13 +99,15 @@ function Tasks({ snack }) {
 				sourceId: source.droppableId,
 				destinationIndex: destination.index,
 				destinationId: destination.droppableId,
+				mover,
 			};
 			await moveTaskNewColumn(requestBody);
 			const localTasks = { ...tasks };
 			const newTitle = finish.title;
 			localTasks[sourceTaskId].state = newTitle;
-			setTasks({ ...tasks });
 		}
+		localTasks[sourceTaskId].lastMovedBy = { ...mover };
+		setTasks({ ...localTasks });
 	};
 
 	const handleDelete = async (task) => {
@@ -167,6 +177,7 @@ function Tasks({ snack }) {
 				title='Tasks'
 				subtitle='Track your workflow'
 				showButton
+				disableButton={!admin}
 				buttonColor='secondary'
 				buttonText='+ New Task'
 				buttonFunction={handleNewTaskButton}

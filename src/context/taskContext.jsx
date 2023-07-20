@@ -6,24 +6,34 @@ import React, {
 	useEffect,
 } from 'react';
 import { useSnackbar } from 'notistack';
-import { getAllUsers } from '../api/users';
-import { getAllColumns } from '../api/columns';
-import { getTasks, taksDueSoon } from '../api/tasks';
+
+import { getCompanyUsers } from '../api/users';
+import { getCompanyColumns } from '../api/columns';
+import { getCompanyTasks, taksDueSoon } from '../api/tasks';
+import { getCompanyById } from '../api/companies';
+import {
+	getCompanyId,
+	getIsAdmin,
+	getStoredUser,
+} from '../helpers/helperFunctions';
 
 export const TaskContext = createContext({});
 
 export const TaskContextProvider = (props) => {
 	const [users, setUsers] = useState([]);
 	const [refetchUsers, setRefetchUsers] = useState(false);
-	const [loggedInUser, setLoggedInUser] = useState({});
 	const [tasks, setTasks] = useState({});
 	const [columns, setColumns] = useState({});
 	const [tasksDue, setTasksDue] = useState([]);
+	const [company, setCompany] = useState({});
 	const { enqueueSnackbar } = useSnackbar();
 	const [dashboard, setDashboard] = useState({
 		sidebarLarge: true,
 		sidebarWidth: 0,
 	});
+	const companyId = useMemo(() => getCompanyId(), []);
+	const isAdmin = useMemo(() => getIsAdmin(), []);
+	const loggedInUser = getStoredUser();
 
 	const snack = useCallback(
 		(message, type) => {
@@ -98,22 +108,9 @@ export const TaskContextProvider = (props) => {
 	);
 
 	useEffect(() => {
-		async function getUsers() {
-			const userData = await getAllUsers();
-			const { status, response } = userData.data;
-			if (status === 200) {
-				setUsers(response);
-			} else {
-				snack('There was an error retrieving users.', 'error');
-			}
-		}
-		getUsers();
-	}, [refetchUsers, snack]);
-
-	useEffect(() => {
 		async function getAllTasks() {
-			const taskData = await getTasks(false);
-			const { status, response } = taskData?.data;
+			const taskData = await getCompanyTasks(false, companyId);
+			const { status, response, message } = taskData;
 			if (status === 200) {
 				const localTasks = {};
 				response.forEach((d) => {
@@ -122,16 +119,31 @@ export const TaskContextProvider = (props) => {
 				});
 				setTasks({ ...localTasks });
 			} else {
-				snack('There was an error retrieving tasks.', 'error');
+				snack(message || 'There was an error retrieving tasks.', 'error');
 			}
 		}
 		getAllTasks();
-	}, [snack]);
+	}, [companyId, snack]);
+
+	useEffect(() => {
+		async function getUsers() {
+			if (companyId) {
+				const userData = await getCompanyUsers(companyId);
+				const { status, response, message } = userData;
+				if (status === 200) {
+					setUsers(response);
+				} else {
+					snack(message || 'There was an error retrieving users.', 'error');
+				}
+			}
+		}
+		getUsers();
+	}, [companyId, refetchUsers, snack]);
 
 	useEffect(() => {
 		async function getColumns() {
-			const columnData = await getAllColumns();
-			const { status, response } = columnData.data;
+			const columnData = await getCompanyColumns(companyId);
+			const { status, response, message } = columnData;
 			if (status === 200) {
 				const localColumns = {};
 				response.forEach((d) => {
@@ -140,30 +152,45 @@ export const TaskContextProvider = (props) => {
 				});
 				setColumns({ ...localColumns });
 			} else {
-				snack('There was an error retrieving columns.', 'error');
+				snack(message || 'There was an error retrieving columns.', 'error');
 			}
 		}
 		getColumns();
-	}, [snack]);
+	}, [companyId, snack]);
 
-	useEffect(()=>{
-		async function getTasksDueSoon(){
-			const dueSoon = await taksDueSoon(5);
-			const {status, response} = dueSoon.data;
-			if(status === 200){
+	useEffect(() => {
+		async function getTasksDueSoon() {
+			const dueSoon = await taksDueSoon(5, companyId);
+			const { status, response, message } = dueSoon;
+			if (status === 200) {
 				setTasksDue(response);
-			}else{
-				snack('There was an error retrieving tasks due soon.', 'error');
+			} else {
+				snack(
+					message || 'There was an error retrieving tasks due soon.',
+					'error'
+				);
 			}
 		}
 		getTasksDueSoon();
-	},[snack, tasks])
+	}, [companyId, snack, tasks]);
 
 	useEffect(() => {
-		if (users.length) {
-			setLoggedInUser(users.find((u) => u._id === '63c149099e9fb6a68fcb052c'));
+		async function getCompany() {
+			if (companyId) {
+				const result = await getCompanyById(companyId);
+				const { status, response, message } = result;
+				if (status === 200) {
+					setCompany(response);
+				} else {
+					snack(
+						message || 'There was an error retrieving your company.',
+						'error'
+					);
+				}
+			}
 		}
-	}, [users]);
+		getCompany();
+	}, [companyId, snack]);
 
 	const providerValue = useMemo(
 		() => ({
@@ -179,6 +206,9 @@ export const TaskContextProvider = (props) => {
 			loggedInUser,
 			setRefetchUsers,
 			tasksDue,
+			isAdmin,
+			snack,
+			company,
 		}),
 		[
 			dashboard,
@@ -193,6 +223,9 @@ export const TaskContextProvider = (props) => {
 			loggedInUser,
 			setRefetchUsers,
 			tasksDue,
+			isAdmin,
+			snack,
+			company,
 		]
 	);
 

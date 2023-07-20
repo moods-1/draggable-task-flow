@@ -1,7 +1,9 @@
 import React from 'react';
 import { TextField } from '@mui/material';
+import useStyles from '../../styles/AppStyles';
 
-function ModalTextField({ label, value, onChange, inputProps, type }) {
+function ModalTextField({ label, value, onChange, inputProps, type, required, disabled }) {
+	const classes = useStyles();
 	return (
 		<TextField
 			label={label || ''}
@@ -11,8 +13,10 @@ function ModalTextField({ label, value, onChange, inputProps, type }) {
 			fullWidth
 			onChange={onChange}
 			inputProps={inputProps}
-			required
+			required={required}
 			value={value || ''}
+			disabled={disabled}
+			className={classes.textField}
 		/>
 	);
 }

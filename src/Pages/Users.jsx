@@ -8,10 +8,10 @@ import CustomDataTable from '../components/custom/CustomDataTable';
 import { DefaultProfile } from '../images';
 import SearchInput from '../components/custom/SearchInput';
 import UserModal from '../components/Modals/UserModal';
-import { phoneNumberHyphenator } from '../helpers/helperFunctions';
+import { phoneNumberHyphenator, getIsAdmin } from '../helpers/helperFunctions';
 
 function Users({ snack }) {
-	const { users } = useContext(TaskContext);
+	const { users, loggedInUser } = useContext(TaskContext);
 	const [showNewUserModal, setShowNewUserModal] = useState(false);
 	const [dataFilter, setDataFilter] = useState('');
 	const [localUsers, setLocalUsers] = useState([]);
@@ -19,10 +19,13 @@ function Users({ snack }) {
 	const [type, setType] = useState('new');
 	const [isLoading, setIsLoading] = useState(true);
 	const classes = useStyles();
+	const admin = getIsAdmin();
 
 	const rows = localUsers.map((user) => {
-		const { image, firstName, lastName, phoneNumber } = user;
+		const { image, firstName, lastName, phoneNumber, _id: id } = user;
 		const imageAlt = `${firstName} ${lastName}`;
+		const enableEdit = loggedInUser?._id === id || admin;
+
 		return {
 			...user,
 			phoneNumber: phoneNumberHyphenator(phoneNumber),
@@ -35,14 +38,17 @@ function Users({ snack }) {
 				/>
 			),
 			action: (
-				<MoreVert
-					role='button'
+				<button
+					className='more-button'
+					disabled={!enableEdit}
 					onClick={() => {
 						setCurrentUser(user);
 						setType('edit');
 						setShowNewUserModal(!showNewUserModal);
 					}}
-				/>
+				>
+					<MoreVert />
+				</button>
 			),
 		};
 	});
@@ -62,6 +68,7 @@ function Users({ snack }) {
 				buttonText='+ New User'
 				buttonColor='secondary'
 				showButton
+				disableButton={!admin}
 				buttonFunction={() => {
 					setType('new');
 					setShowNewUserModal(true);
