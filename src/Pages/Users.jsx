@@ -5,7 +5,7 @@ import ContentHeader from '../components/ContentHeader';
 import { USERS_TABLE_HEADERS } from '../helpers/constants';
 import useStyles from '../styles/UsersStyles';
 import CustomDataTable from '../components/custom/CustomDataTable';
-import { DefaultProfile } from '../images';
+import { DefaultProfile } from '../assets/images';
 import SearchInput from '../components/custom/SearchInput';
 import UserModal from '../components/Modals/UserModal';
 import { phoneNumberHyphenator, getIsAdmin } from '../helpers/helperFunctions';

@@ -7,6 +7,7 @@ import Tasks from './Pages/Tasks';
 import Charts from './Pages/Charts';
 import Auth from './Pages/Auth';
 import Dashboard from './Pages/Dashboard';
+import ErrorPage from './Pages/ErrorPage';
 import useStyles from './styles/AppStyles';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
 					<Route path='users' element={<Users snack={snack} />} />
 					<Route path='charts' element={<Charts snack={snack} />} />
 				</Route>
+				<Route path='*' element={<ErrorPage />} />
 			</Routes>
 		</div>
 	);

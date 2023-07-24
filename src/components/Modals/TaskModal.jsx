@@ -6,7 +6,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { CalendarMonth } from '@mui/icons-material';
 import SearchInput from '../custom/SearchInput';
-import { DefaultProfile } from '../../images';
+import { DefaultProfile } from '../../assets/images';
 import { TaskContext } from '../../context/taskContext';
 import {
 	TASK_LIST_PRIORITY,

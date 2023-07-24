@@ -9,8 +9,10 @@ import {
 	formatPieDonutChartData,
 	getCompanyId,
 } from '../helpers/helperFunctions';
+import CustomSpinner from '../components/custom/CustomSpinner';
 
-const Charts = () => {
+const Charts = ({ snack }) => {
+	const [chartsLoading, setChartsLoading] = useState(true);
 	const [multipleChartsCategories, setMultipleChartsCategories] = useState([]);
 	const [multipleChartsSeries, setMultipleChartsSeries] = useState([]);
 	const [pieDonutSeriesData, setPieDonutSeriesData] = useState([]);
@@ -18,28 +20,40 @@ const Charts = () => {
 	const classes = useStyles();
 
 	useEffect(() => {
+		setChartsLoading(true);
 		const fetchTasks = async () => {
 			const companyId = getCompanyId();
 			const result = await getCompanyTasks(true, companyId);
-			const { response } = result;
-			const { multiCategories, multiDataSeries } =
-				formatMultiChartData(response);
-			const { pieDonutData } = formatPieDonutChartData(response);
-			setMultipleChartsCategories(multiCategories);
-			setMultipleChartsSeries(multiDataSeries);
-			setPieDonutSeriesData(pieDonutData);
+			const { status, message, response } = result;
+			if (status < 300) {
+				const { multiCategories, multiDataSeries } =
+					formatMultiChartData(response);
+				const { pieDonutData } = formatPieDonutChartData(response);
+				setMultipleChartsCategories(multiCategories);
+				setMultipleChartsSeries(multiDataSeries);
+				setPieDonutSeriesData(pieDonutData);
+			} else {
+				snack(message, 'error');
+			}
+			setChartsLoading(false);
 		};
 		fetchTasks();
-	}, []);
+	}, [snack]);
 
 	return (
 		<div className={classes.chartsMain}>
 			<div className={classes.chartsContent}>
-				<MultipleChart
-					series={multipleChartsSeries}
-					categories={multipleChartsCategories}
-				/>
-				<PieChart series={pieDonutSeriesData} />
+				{chartsLoading ? (
+					<CustomSpinner height='80vh' color={'primary'} />
+				) : (
+					<>
+						<MultipleChart
+							series={multipleChartsSeries}
+							categories={multipleChartsCategories}
+						/>
+						<PieChart series={pieDonutSeriesData} />
+					</>
+				)}
 			</div>
 		</div>
 	);

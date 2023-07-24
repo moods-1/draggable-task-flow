@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useContext } from 'react';
 
 import { TaskContext } from '../context/taskContext';
 import useStyles from '../styles/HeaderStyles';
-import { DefaultProfile } from '../images';
+import { DefaultProfile } from '../assets/images';
 import {
 	phoneNumberHyphenator,
 	unauthorizedLogout,
