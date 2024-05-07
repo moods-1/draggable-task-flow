@@ -34,19 +34,19 @@ const PieDountCharts = ({
 			borderRadius: 0,
 			borderWidth: 0,
 			spacing: [20, 20, 20, 20],
-			backgroundColor: 'rgba(33,33,44,0.5)',
+			backgroundColor: '',
 		},
 		colors: CHART_COLORS,
 		title: {
 			text: title || '',
 			style: {
-				color: '#FFFFFF',
+				color: '#000000',
 			},
 		},
 		subtitle: {
 			text: subtitle || '',
 			style: {
-				color: '#FFFFFF',
+				color: '#000000',
 			},
 		},
 		responsive: {
@@ -63,7 +63,7 @@ const PieDountCharts = ({
 								return `<p class="reportLegend">${this.name}</p>`;
 							},
 							itemStyle: {
-								color: '#FFFFFF',
+								color: '#000000',
 							},
 						},
 					},
@@ -86,6 +86,7 @@ const PieDountCharts = ({
 				dataLabels: {
 					enabled: enableDataLabels,
 					format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+					color: '#000000'
 				},
 			},
 		},

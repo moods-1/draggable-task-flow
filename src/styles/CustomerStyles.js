@@ -1,8 +1,8 @@
 import { makeStyles } from '@material-ui/core';
 export default makeStyles((theme) => ({
-	usersMain: {
+	customersMain: {
 		width: '100%',
-		height: `calc(100vh-${theme.headerHeight})`,
+		height: `calc(100vh-${theme.headerHeight})`, 
 		padding: '0px 20px 20px 20px',
 		backgroundColor: 'none',
 		'& p': {
@@ -10,7 +10,7 @@ export default makeStyles((theme) => ({
 			margin: 0,
 		},
 	},
-	usersContent: {
+	customersContent: {
 		justifyContent: 'left',
 		padding: '0px',
 		margin: 0,

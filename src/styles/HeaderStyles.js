@@ -1,26 +1,36 @@
 import { makeStyles } from '@material-ui/core';
 export default makeStyles((theme) => ({
 	headerMain: {
-		width: '100vw',
-		maxWidth: '1920px',
+		width: '100%',
 		height: theme.headerHeight,
-		padding: '10px 30px',
-		backgroundColor: theme.palette.background.light,
-		color: '#FFF',
+		padding: '5px 30px',
+		backgroundColor: theme.palette.background.dark,
+		color: '#fff',
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		'& .header-brand-logo': {
-			width: '40px',
-			height: '40px',
-			overflow: 'hidden',
-		},
+		gap: '20px',
+		position: 'sticky',
+		top: 0,
+		zIndex: 1000,
 		'& p': {
 			padding: 0,
 			margin: 0,
 		},
-		'& .header-large-title': {
-			fontSize: '26px',
+		'& .header-text': {
+			textOverflow: 'ellipsis',
+			overflow: 'hidden',
+			whiteSpace: 'nowrap',
+			'& .header-title': {
+				fontSize: '18px',
+				fontWeight: 600,
+				marginBottom: 0,
+				display: 'inline',
+				marginRight: '5px',
+			},
+			'& .header-subtitle': {
+				fontSize: '18px',
+			},
 		},
 		'& .header-profile': {
 			position: 'relative',
@@ -31,26 +41,32 @@ export default makeStyles((theme) => ({
 			'& .header-user-details': {
 				minWidth: 140,
 				maxWidth: 200,
+				padding: '0px 20px 10px',
 				height: 'auto',
 				minHeight: 60,
 				listStyle: 'none',
-				border: '1px solid #777',
 				borderTop: 'none',
 				position: 'absolute',
-				right: '-28px',
-				top: 50,
+				right: '-30px',
+				top: 40,
 				zIndex: 1000,
-				textAlign: 'center',
+				textAlign: 'left',
 				fontSize: '14px',
 				color: '#FFF',
-				background: theme.palette.background.light,
+				background: theme.palette.background.dark,
 				'& li': {
 					marginBottom: '5px',
 				},
 				'& .action': {
 					cursor: 'pointer',
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
 					'&:hover': {
 						color: theme.palette.primary.main,
+					},
+					'& svg': {
+						fontSize: '17px',
 					},
 				},
 			},

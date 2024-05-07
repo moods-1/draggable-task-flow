@@ -7,6 +7,7 @@ import { TaskContext } from '../context/taskContext';
 import {
 	SIDEBAR_PROGRESS_LABELS,
 	MENU_PRIORITY_BUTTONS,
+	TASK_COLORS,
 } from '../helpers/constants';
 import { statusColor } from '../helpers/helperFunctions';
 
@@ -62,7 +63,8 @@ function Statistics() {
 					<div className='statistics-box'>
 						{SIDEBAR_PROGRESS_LABELS.map((label, index) => (
 							<div className='statistic-box' key={label}>
-								<div className='statistic-header'>
+								{/* <div className={`statistic-header ${TASK_COLORS[label]}`}> */}
+								<div className={`statistic-header`}>
 									<p>{label}</p>
 								</div>
 								<div style={{ width: 80, height: 80 }}>
@@ -73,9 +75,9 @@ function Statistics() {
 											strokeWidth={7}
 											styles={buildStyles({
 												strokeLinecap: 'butt',
-												textColor: 'white',
-												pathColor: '#0275d8',
-												trailColor: 'white',
+												textColor: 'black',
+												pathColor: `${TASK_COLORS[label]}`,
+												trailColor: 'light-gray',
 											})}
 										/>
 									) : (
@@ -91,7 +93,7 @@ function Statistics() {
 					<div className='statistics-box'>
 						{priorityLabels.map((label, index) => (
 							<div className='priority-box' key={label}>
-								<div className='priority-header'>
+								<div className={`priority-header`}>
 									<p>{label}</p>
 								</div>
 								<p style={{ color: statusColor(label) }}>

@@ -23,6 +23,7 @@ const MultipleCharts = ({
 	enable3D,
 	enableDataLabels,
 	stacking,
+	xAxisOptions,
 }) => {
 	const options3d = enable3D
 		? { enabled: true, alpha: 15, beta: 10, depth: 50, viewDistance: 25 }
@@ -34,29 +35,30 @@ const MultipleCharts = ({
 			options3d,
 			borderRadius: 0,
 			spacing: [20, 20, 20, 20],
-			backgroundColor: 'rgba(33,33,44,0.5)',
+			backgroundColor: '',
 		},
 		colors: CHART_COLORS,
 		title: {
 			text: title || '',
 			style: {
-				color: '#FFFFFF',
+				color: '#000000',
 			},
 		},
 		subtitle: {
 			text: subtitle || '',
 			style: {
-				color: '#FFFFFF',
+				color: '#000000',
 			},
 		},
 		xAxis: {
+			...xAxisOptions,
 			categories: categories,
 			crosshair: true,
 			labels: {
 				style: {
-					color: '#ffffff',
+					color: '#000000',
 				},
-			},
+			}			
 		},
 		responsive: {
 			rules: [
@@ -72,7 +74,7 @@ const MultipleCharts = ({
 								return `<p class="reportLegend">${this.name}</p>`;
 							},
 							itemStyle: {
-								color: '#FFFFFF',
+								color: '#000000',
 							},
 						},
 					},
@@ -86,7 +88,7 @@ const MultipleCharts = ({
 			},
 			labels: {
 				style: {
-					color: '#ffffff',
+					color: '#000000',
 				},
 			},
 		},
@@ -100,6 +102,19 @@ const MultipleCharts = ({
 			useHTML: true,
 		},
 		plotOptions: {
+			area: {
+				pointStart: 1940,
+				marker: {
+					enabled: false,
+					symbol: 'circle',
+					radius: 2,
+					states: {
+						hover: {
+							enabled: true
+						}
+					}
+				}
+			},
 			packedbubble: {
 				minSize: '60%',
 				maxSize: '120%',

@@ -18,7 +18,7 @@ code {
 }
 
 ::-webkit-scrollbar {
-	width: 9px;
+	width: 12px;
 	background-color: #334;
 }
 
@@ -30,6 +30,42 @@ code {
 ::-webkit-scrollbar-thumb {
 	background: #334;
 	border-radius: 0px;
-	border: 2px solid #FFF;
+	border: 2px solid #fff;
 	min-height: 70px;
+}
+.blue {
+	background-color: #0275d8;
+}
+.red {
+	background-color: #f00;
+}
+.green {
+	background-color: #079647;
+}
+.orange {
+	background-color: #f5b225;
+}
+/* .red {
+	color: #fff;
+	background: red;
+}
+.green {
+	color: #fff;
+	background: green;
+}
+.orange {
+	color: #fff;
+	background: orange;
+} */
+.dashcard {
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 2px 2px 8px #ddd;
+}
+.section-title {
+	font-size: 18px;
+	font-weight: 600;
+}
+.home-users {
+	margin: 20px -20px;
 }

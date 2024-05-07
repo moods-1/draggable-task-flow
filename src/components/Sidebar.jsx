@@ -4,12 +4,15 @@ import { NavLink } from 'react-router-dom';
 import { routes } from '../routes';
 import useStyles from '../styles/SidebarStyles';
 import { TaskContext } from '../context/taskContext';
+import { DefaultLogo } from '../assets/images';
 
-function Sidebar({ headerHeight }) {
+function Sidebar() {
 	const classes = useStyles();
-	const { dashboard, handleDashboard } = useContext(TaskContext);
+	const { dashboard, handleDashboard, company } = useContext(TaskContext);
 	const { sidebarLarge } = dashboard;
 	const siderBarRef = useRef();
+	const brand = company?.logo || DefaultLogo;
+	const compName = company?.companyName || '';
 
 	const handleControlButton = () => {
 		if (siderBarRef.current) {
@@ -20,11 +23,11 @@ function Sidebar({ headerHeight }) {
 	};
 
 	return (
-		<div
-			ref={siderBarRef}
-			className={classes.sidebarMain}
-			style={{ minHeight: `calc(100vh - ${headerHeight}px)` }}
-		>
+		<div ref={siderBarRef} className={classes.sidebarMain}>
+			<div className='sidebar-brand'>
+				<img src={brand} alt='Logo' />
+				{sidebarLarge ? <span>{compName}</span> : null}
+			</div>
 			<div className={classes.controlDiv}>
 				<button aria-label='Expansion' onClick={handleControlButton}>
 					{sidebarLarge ? <ChevronLeft /> : <ChevronRight />}
@@ -35,10 +38,10 @@ function Sidebar({ headerHeight }) {
 					{routes.map(({ title, path, icon }) => (
 						<li key={path}>
 							<NavLink to={path}>
-								<div>
-									{sidebarLarge ? title : ''}
+								<span>
 									{icon ? icon : ''}
-								</div>
+									{sidebarLarge ? title : ''}
+								</span>
 							</NavLink>
 						</li>
 					))}

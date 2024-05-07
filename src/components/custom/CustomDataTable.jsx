@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
-import TableRowLoading from './TableRowLoading';
+import { TableRowLoading } from './Loaders';
 
 const useStyles = makeStyles((theme) => ({
 	tableDiv: {
 		overflow: 'auto',
 		height: 'auto',
+		borderRadius: '10px',
+		boxShadow: '2px 2px 8px #ddd',
+		padding: '10px',
 		'&::-webkit-scrollbar': {
-			width: '10px',
+			width: '12px',
 		},
 		'&::-webkit-scrollbar-track': {
 			background: '#FFF',
 			borderRadius: '0px',
+			backgroundColor: theme.palette.background.mid,
 		},
 		'&::-webkit-scrollbar-thumb': {
-			borderRadius: '0px',
-			border: '2px solid #FFF',
-			backgroundColor: theme.palette.background.light,
+			borderRadius: '12px',
+			backgroundColor: theme.palette.background.dark,
 			minHeight: 80,
 		},
 	},

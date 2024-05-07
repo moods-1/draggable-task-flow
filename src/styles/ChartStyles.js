@@ -2,8 +2,9 @@ import { makeStyles } from '@material-ui/core';
 export default makeStyles((theme) => ({
 	chartsMain: {
 		width: '100%',
-		padding: '30px',
-		minHeight: `calc(100vh - ${theme.headerHeight})`,
+		height: `calc(100vh-${theme.headerHeight})`,
+		padding: '20px',
+		backgroundColor: 'none',
 		'& .highcharts-data-table': {
 			marginTop: '10px',
 			color: '#FFFFFF',
@@ -27,12 +28,14 @@ export default makeStyles((theme) => ({
 		flexDirection: 'column',
 		flex: 1,
 		borderRadius: 5,
+		boxShadow: theme.boxShadow.mid,
 		'& .chart-head': {
 			display: 'flex',
 			justifyContent: 'space-between',
 			alignItems: 'center',
 			padding: '20px',
-			background: theme.palette.background.light,
+			color: '#000',
+			// background: theme.palette.background.mid,
 			'& select': {
 				maxWidth: '200px',
 				height: 30,
@@ -43,7 +46,7 @@ export default makeStyles((theme) => ({
 	},
 	label: {
 		display: 'inline-block',
-		color: '#FFFFFF',
+		color: '#000',
 	},
 	selectionBox: {
 		display: 'flex',

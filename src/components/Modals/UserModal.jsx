@@ -12,7 +12,7 @@ import ModalTextField from './ModalTextField';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { DefaultProfile } from '../../assets/images';
 import useStyles from '../../styles/TaskUserModalStyles';
-import { makeRandomId, storeUser } from '../../helpers/helperFunctions';
+import { makeRandomId } from '../../helpers/helperFunctions';
 import { NUMBER_REGEX } from '../../helpers/constants';
 import { TaskContext } from '../../context/taskContext';
 import UserTaskList from '../UserTaskList';
@@ -87,7 +87,6 @@ function UserModal({ open, toggle, currentUser, setCurrentUser, type }) {
 			const result = await addUser(user);
 			const { status, response } = result;
 			if (status === 200) {
-				storeUser(response)
 				handleUsers(response, type);
 				toggle();
 				return snack(`${user.firstName} added successfully!`, 'success');
@@ -99,7 +98,6 @@ function UserModal({ open, toggle, currentUser, setCurrentUser, type }) {
 			const result = await updateUser(user);
 			const { status } = result;
 			if (status === 200) {
-				storeUser(user)
 				handleUsers(user, type);
 				toggle();
 				return snack(`${user.firstName} updated successfully!`, 'success');
@@ -120,7 +118,9 @@ function UserModal({ open, toggle, currentUser, setCurrentUser, type }) {
 	useEffect(() => {
 		if (type === 'new') {
 			setUser({ assignedTasks: [] });
-		} else setUser(currentUser);
+		} else {
+			setUser(currentUser);
+		}
 	}, [currentUser, id, type]);
 
 	useEffect(() => {

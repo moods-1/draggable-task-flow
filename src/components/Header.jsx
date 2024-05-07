@@ -1,27 +1,24 @@
-import React, { useRef, useEffect, useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
+import { Logout, Edit } from '@mui/icons-material';
 import { TaskContext } from '../context/taskContext';
 import useStyles from '../styles/HeaderStyles';
 import { DefaultProfile } from '../assets/images';
-import {
-	phoneNumberHyphenator,
-	unauthorizedLogout,
-} from '../helpers/helperFunctions';
+import { phoneNumberHyphenator } from '../helpers/helperFunctions';
 import UserModal from '../components/Modals/UserModal';
 import ClickOutsideHandler from './custom/ClickOutsideHandler';
-import { DefaultLogo } from '../assets/images';
+import { logoutUser } from '../api/users';
 
-function Header({ setHeaderHeight }) {
+function Header() {
 	const [showProfileDetails, setShowProfileDetails] = useState(false);
 	const [showUserModal, setShowUserModal] = useState(false);
 	const classes = useStyles();
-	const headerRef = useRef();
-	const { loggedInUser, company } = useContext(TaskContext);
+	const { loggedInUser, handleUserLogout, headerText } =
+		useContext(TaskContext);
 	const firstName = loggedInUser?.firstName;
 	const lastName = loggedInUser?.lastName;
 	const phoneNumber = phoneNumberHyphenator(loggedInUser?.phoneNumber);
 	const userName = `${firstName} ${lastName}`;
-	const brand = company?.logo || DefaultLogo;
 
 	const handleEdit = () => {
 		setShowProfileDetails(false);
@@ -29,29 +26,39 @@ function Header({ setHeaderHeight }) {
 	};
 
 	const handleLogout = () => {
-		unauthorizedLogout();
+		setShowProfileDetails(false);
+		const { _id: id } = loggedInUser;
+		const logout = async () => {
+			const result = await logoutUser({ id });
+			const { status } = result;
+			if (status < 400) {
+				handleUserLogout();
+			}
+		};
+		logout();
 	};
 
 	useEffect(() => {
-		if (headerRef.current) {
-			setHeaderHeight(headerRef.current.clientHeight);
-		}
-	}, [setHeaderHeight]);
+		window.addEventListener('resize', () => {
+			setShowProfileDetails(false);
+		});
+		return window.removeEventListener('resize', () => {});
+	}, []);
 
 	return (
-		<div ref={headerRef} className={classes.headerMain}>
-			<div className='header-brand-logo'>
-				<img src={brand} alt='Logo' width='100%' />
-			</div>
-			<p className='header-large-title'>Task Dashboard</p>
+		<div className={classes.headerMain}>
+			<p className='header-text'>
+				<span className='header-title'>{headerText.title}:</span>
+				<span className='header-subtitle'>{headerText.subtitle}</span>
+			</p>
 			<ClickOutsideHandler outsideFunction={() => setShowProfileDetails(false)}>
 				<div className='header-profile'>
 					<img
 						role='presentation'
 						src={loggedInUser?.image || DefaultProfile}
 						alt={loggedInUser?.firstName || 'default'}
-						width={40}
-						height={40}
+						width={35}
+						height={35}
 						onClick={() => {
 							setShowProfileDetails(!showProfileDetails);
 						}}
@@ -60,8 +67,14 @@ function Header({ setHeaderHeight }) {
 						<ul className='header-user-details'>
 							<li>{userName || ''}</li>
 							<li>{phoneNumber}</li>
-							<li className='action' onClick={handleEdit}>edit</li>
-							<li className='action' onClick={handleLogout}>logout</li>
+							<li className='action' onClick={handleEdit}>
+								Edit
+								<Edit />
+							</li>
+							<li className='action' onClick={handleLogout}>
+								Logout
+								<Logout />
+							</li>
 						</ul>
 					)}
 				</div>

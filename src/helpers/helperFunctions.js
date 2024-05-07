@@ -176,10 +176,7 @@ export const getCompanyId = () => {
 };
 
 export const handleLogin = (data) => {
-	const { token, companyId, roles } = data;
-	if (roles && typeof roles === 'object') {
-		setIsAdmin(roles.includes('admin'));
-	}
+	const { token, companyId } = data;
 	storeUser(data);
 	setToken(token);
 	setCompanyId(companyId);

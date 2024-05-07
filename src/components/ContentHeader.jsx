@@ -29,9 +29,7 @@ function ContentHeader({
 				>
 					{buttonText}
 				</Button>
-			) : (
-				<div />
-			)}
+			) : null}
 		</div>
 	);
 }

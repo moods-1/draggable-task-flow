@@ -20,7 +20,7 @@ function NonDroppableColumn({ data, handleMore, setShowTaskModal, title }) {
 	return (
 		<Card className='droppable-column'>
 			<div className='droppable-column-head'>
-				<Typography textAlign={'center'} variant='body1'>
+				<Typography textAlign={'center'} fontWeight={600} variant='body1'>
 					{title}
 				</Typography>
 				<Quantity />

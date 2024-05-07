@@ -2,12 +2,48 @@ import { makeStyles } from '@material-ui/core';
 export default makeStyles((theme) => ({
 	appMain: {
 		width: '100%',
-		minHeight: '100vh',
-		backgroundColor: '#000000',
-		backgroundImage: theme.palette.background.pattern,
+		height: '100vh',
+		backgroundColor: '#fefefe',
+		color: '#000',
+		'& .MuiButton, .btn': {
+			boxShadow: 'none!important',
+		},
+		'& .form-control': {
+			boxShadow: 'none!important',
+		},
+		'& table': {
+			backgroundColor: '#FFF',
+			'& thead': {
+				background: theme.palette.background.mid,
+				fontSize: '13px',
+				fontWeight: 600,
+				color: '#000',
+				position: 'sticky',
+				zIndex: 10,
+				top: '-2px',
+				'& td': {
+					border: 'none',
+				},
+			},
+			'& tbody': {
+				fontSize: '14px',
+				'& td': {
+					verticalAlign: 'middle',
+				},
+				'& .more-button': {
+					border: 'none',
+					background: 'transparent',
+					outlineStyle: 'none',
+				},
+			},
+			'& img': {
+				borderRadius: '50%',
+			},
+		},
 	},
 	appMainContainer: {
 		maxWidth: '1920px',
+		height: '100vh',
 		borderLeft: `1px solid ${theme.palette.background.light}`,
 		borderRight: `1px solid ${theme.palette.background.light}`,
 		margin: 'auto',
@@ -31,6 +67,8 @@ export default makeStyles((theme) => ({
 	},
 	appContent: {
 		flexGrow: 1,
+		height: '100vh',
+		overflowY: 'auto',
 	},
 	contentHeader: {
 		padding: '10px 0px',
@@ -38,20 +76,21 @@ export default makeStyles((theme) => ({
 		fontSize: '14px',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		color: '#FFF',
+		color: '#000',
 		marginBottom: '20px',
-		borderBottom: `1px solid ${theme.palette.secondary.main}`,
 		'& .content-header-title': {
-			fontSize: '18px',
+			fontSize: '22px',
+			fontWeight: 600,
+			marginBottom: 0,
 		},
 		'& .content-header-subtitle': {
-			fontSize: '13px',
+			fontSize: '15px',
 		},
 		'& button': {
 			border: 'none',
 			minWidth: '110px',
 			height: '30px',
-			background: theme.palette.background.light,
+			background: theme.palette.background.dark,
 			'&:disabled': {
 				opacity: 0.8,
 			},

@@ -4,9 +4,6 @@ export default makeStyles((theme) => ({
 		'& .modal-content': {
 			border: 'none',
 		},
-		'& .cancel-button': {
-			background: theme.palette.background.light,
-		},
 		'& .MuiTextField-root': {
 			'& .Mui-disabled': {
 				opacity: 1,
@@ -21,7 +18,7 @@ export default makeStyles((theme) => ({
 		},
 	},
 	modalHeader: {
-		color: theme.palette.white,
+		color: '#000',
 		height: '50px',
 		background: theme.palette.background.light,
 		'& p': {
@@ -116,9 +113,9 @@ export default makeStyles((theme) => ({
 		position: 'absolute',
 		top: 5,
 		right: 15,
-		color: '#FFF',
+		color: theme.palette.background.dark,
 		'&:hover': {
-			color: theme.palette.primary.main,
+			color: theme.palette.red,
 		},
 	},
 }));

@@ -3,7 +3,7 @@ export default makeStyles((theme) => ({
 	statisticsMain: {
 		width: '100%',
 		padding: '0px',
-		color: '#FFF',
+		color: '#000',
 		marginBottom: '20px',
 	},
 	statisticsContent: {
@@ -11,18 +11,22 @@ export default makeStyles((theme) => ({
 		flexWrap: 'wrap',
 		gap: 20,
 		'& .statistics-section-title': {
-			fontSize: '14px',
+			fontSize: '16px',
+			fontWeight: 600,
 			marginBottom: '5px',
 		},
 		'& .statistics-box': {
 			display: 'flex',
-			gap: 20,
+			gap: 20,			
 			'& .statistic-box': {
+				borderRadius: '10px',
+				boxShadow: theme.boxShadow.mid,
 				'& .statistic-header': {
 					width: '100%',
-					background: theme.palette.text.light,
-					color: theme.palette.text.dark,
 					padding: '10px 0px',
+					color: '#000',
+					fontWeight: 600,
+					backgroundColor: theme.palette.background.mid,
 				},
 				textAlign: 'center',
 				display: 'flex',
@@ -34,16 +38,19 @@ export default makeStyles((theme) => ({
 				backgroundColor: theme.palette.background.light,
 			},
 			'& .priority-box': {
+				color: '#fff',
+				borderRadius: '10px',
+				boxShadow: theme.boxShadow.mid,
 				'& .priority-header': {
-					background: theme.palette.background.light,
-					color: '#FFF',
 					padding: '10px 0px',
+					color: '#000',
+					fontWeight: 600,
+					backgroundColor: theme.palette.background.mid,
 				},
 				textAlign: 'center',
 				width: '140px',
 				height: '140px',
 				padding: '0px',
-				color: theme.palette.background.dark,
 				backgroundColor: '#FFF',
 				'& p:nth-child(2)': {
 					marginTop: '15px',

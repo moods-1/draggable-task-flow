@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Row } from 'reactstrap';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+
 import { TaskContext } from '../context/taskContext';
 import TaskModal from '../components/Modals/TaskModal';
 import DroppableColumn from '../components/DroppableColumn';
@@ -11,9 +12,8 @@ import ContentHeader from '../components/ContentHeader';
 import useStyles from '../styles/TasksStyles';
 import { moveTaskSameColumn, moveTaskNewColumn } from '../api/columns';
 import { deleteTask } from '../api/tasks';
-import CustomSpinner from '../components/custom/CustomSpinner';
+import { CustomSpinner }  from '../components/custom/Loaders';
 import StateFilters from '../components/StateFilters';
-import { getIsAdmin } from '../helpers/helperFunctions';
 
 function Tasks({ snack }) {
 	const classes = useStyles();
@@ -25,17 +25,16 @@ function Tasks({ snack }) {
 	const [taskType, setTaskType] = useState('edit');
 	const [filterObject, setFilterObject] = useState({});
 	const [showFilters, setShowFilters] = useState(false);
-	const { tasks, setTasks, tasksDue, columns, handleColumns, loggedInUser } =
+	const { tasks, setTasks, tasksDue, columns, handleColumns, loggedInUser, isAdmin, handleHeaderText } =
 		useContext(TaskContext);
-	const admin = getIsAdmin();
-
+	
 	const filteredTasks = Object.values(tasks).filter(
 		(t) => t.state in filterObject || !Object.keys(filterObject).length
 	);
 
 	const FilterButton = () => {
 		return (
-			<div className='mb-2 text-white'>
+			<div className='mb-2 text-black'>
 				<p
 					role='button'
 					style={{ display: 'flex', alignItems: 'center' }}
@@ -171,13 +170,17 @@ function Tasks({ snack }) {
 		setIsLoading(localCols.length < 1);
 	}, [columns]);
 
+	useEffect(() => {
+		handleHeaderText({ title: 'Tasks', subtitle: 'Track Workflow' });
+	}, [handleHeaderText]);
+
 	return (
 		<div className={classes.taskMain}>
 			<ContentHeader
-				title='Tasks'
-				subtitle='Track your workflow'
+				title=''
+				subtitle=''
 				showButton
-				disableButton={!admin}
+				disableButton={!isAdmin}
 				buttonColor='secondary'
 				buttonText='+ New Task'
 				buttonFunction={handleNewTaskButton}

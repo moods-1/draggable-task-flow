@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { TaskContext } from '../context/taskContext';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import { Button } from 'reactstrap';
@@ -24,6 +25,7 @@ const Auth = ({ snack }) => {
 	const [disableSubmit, setDisableSubmit] = useState(true);
 	const navigate = useNavigate();
 	const loggedIn = getLoggedIn();
+	const { handleUserLogin } = useContext(TaskContext);
 
 	const classes = useStyles();
 
@@ -46,7 +48,7 @@ const Auth = ({ snack }) => {
 		const result = await userLogin(requestBody);
 		const { status, message, response } = result;
 		if (status < 305) {
-			handleLogin(response);
+			handleUserLogin(response);
 			clearState();
 			navigate('/');
 		} else {

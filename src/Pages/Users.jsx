@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { MoreVert } from '@mui/icons-material';
+import { MoreVert, Circle } from '@mui/icons-material';
 import { TaskContext } from '../context/taskContext';
 import ContentHeader from '../components/ContentHeader';
 import { USERS_TABLE_HEADERS } from '../helpers/constants';
@@ -8,10 +8,11 @@ import CustomDataTable from '../components/custom/CustomDataTable';
 import { DefaultProfile } from '../assets/images';
 import SearchInput from '../components/custom/SearchInput';
 import UserModal from '../components/Modals/UserModal';
-import { phoneNumberHyphenator, getIsAdmin } from '../helpers/helperFunctions';
+import { phoneNumberHyphenator } from '../helpers/helperFunctions';
 
-function Users({ snack }) {
-	const { users, loggedInUser } = useContext(TaskContext);
+function Users({ snack, hideFilter, hideHeader }) {
+	const { users, loggedInUser, isAdmin, handleHeaderText } =
+		useContext(TaskContext);
 	const [showNewUserModal, setShowNewUserModal] = useState(false);
 	const [dataFilter, setDataFilter] = useState('');
 	const [localUsers, setLocalUsers] = useState([]);
@@ -19,12 +20,11 @@ function Users({ snack }) {
 	const [type, setType] = useState('new');
 	const [isLoading, setIsLoading] = useState(true);
 	const classes = useStyles();
-	const admin = getIsAdmin();
 
 	const rows = localUsers.map((user) => {
-		const { image, firstName, lastName, phoneNumber, _id: id } = user;
+		const { image, firstName, lastName, phoneNumber, _id: id, loggedIn } = user;
 		const imageAlt = `${firstName} ${lastName}`;
-		const enableEdit = loggedInUser?._id === id || admin;
+		const enableEdit = loggedInUser?._id === id || isAdmin;
 
 		return {
 			...user,
@@ -36,6 +36,11 @@ function Users({ snack }) {
 					height={30}
 					width={30}
 				/>
+			),
+			loggedIn: loggedIn ? (
+				<Circle sx={{ fontSize: 10, color: '#00ff00' }} />
+			) : (
+				<Circle sx={{ fontSize: 10, color: '#f00' }} />
 			),
 			action: (
 				<button
@@ -60,35 +65,45 @@ function Users({ snack }) {
 		}
 	}, [users]);
 
+	useEffect(() => {
+		handleHeaderText({ title: 'Users', subtitle: 'View and Manage Users' });
+	}, [handleHeaderText]);
+
 	return (
 		<div className={classes.usersMain}>
-			<ContentHeader
-				title='Users'
-				subtitle='View and manage users'
-				buttonText='+ New User'
-				buttonColor='secondary'
-				showButton
-				disableButton={!admin}
-				buttonFunction={() => {
-					setType('new');
-					setShowNewUserModal(true);
-				}}
-			/>
+			{hideHeader ? null : (
+				<ContentHeader
+					title=''
+					subtitle=''
+					buttonText='+ New User'
+					buttonColor='secondary'
+					showButton
+					disableButton={!isAdmin}
+					buttonFunction={() => {
+						setType('new');
+						setShowNewUserModal(true);
+					}}
+				/>
+			)}
+
 			<div className={classes.usersContent}>
 				<div>
-					<div className={classes.tableTop}>
-						<SearchInput
-							placeHolder='Search users'
-							changeFunction={setDataFilter}
-							inputSize='sm'
-						/>
-					</div>
+					{hideFilter ? null : (
+						<div className={classes.tableTop}>
+							<SearchInput
+								placeHolder='Search users'
+								changeFunction={setDataFilter}
+								inputSize='sm'
+							/>
+						</div>
+					)}
+
 					<CustomDataTable
 						rows={rows}
 						columns={USERS_TABLE_HEADERS}
 						dataFilter={dataFilter}
 						filterable
-						tableHeight={400}
+						tableHeight={600}
 						isLoading={isLoading}
 					/>
 				</div>

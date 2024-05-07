@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core';
 export default makeStyles((theme) => ({
 	taskMain: {
 		width: '100%',
-		height: '100%',
+		height: `calc(100vh-${theme.headerHeight})`,
 		padding: '0px 20px 20px 20px',
 		backgroundColor: 'none',
 		'& .High': {
@@ -22,20 +22,23 @@ export default makeStyles((theme) => ({
 			minWidth: '330px',
 			minHeight: '200px',
 			border: 'none',
-			borderRadius: '0px',
-			background: 'rgba(33,33,44, 0.8)',
+			borderRadius: '10px',
+			overflow: 'hidden',
+			background: '#fff',
+			boxShadow: theme.boxShadow.mid,
 			'& .droppable-column-head': {
 				position: 'relative',
 				padding: 20,
-				color: '#FFF',
-				background: theme.palette.background.light,
-				borderBottom: `1px solid ${theme.palette.background.dark}`,
+				color: '#000',
+				fontWeight: 600,
+				background: theme.palette.background.mid,
+				borderBottom: `1px solid ${theme.palette.secondary.light}`,
 				'& .droppable-column-head-qty': {
 					position: 'absolute',
 					top: 10,
 					right: 15,
-					background: theme.palette.background.dark,
-					color: '#FFF',
+					background: theme.palette.secondary.dark,
+					color: '#fff',
 					fontSize: '12px',
 					width: 30,
 					height: 30,
@@ -50,7 +53,7 @@ export default makeStyles((theme) => ({
 			height: '100%',
 		},
 		'& .dragging-over': {
-			background: '#334',
+			background: '#eee',
 		},
 	},
 	taskContent: {
@@ -67,7 +70,9 @@ export default makeStyles((theme) => ({
 		padding: '10px 20px',
 		textAlign: 'center',
 		borderRight: '5px solid #fff',
+		borderRadius: '5px',
 		backgroundColor: '#fff',
+		boxShadow: theme.boxShadow.small,
 		fontSize: '15px',
 		'& .task-header': {
 			display: 'flex',
@@ -103,7 +108,7 @@ export default makeStyles((theme) => ({
 			overflow: 'hidden',
 			display: 'flex',
 			alignItems: 'center',
-			color: '#FFF',
+			color: '#000',
 			fontSize: '14px',
 			background: theme.palette.background.light,
 			marginBottom: '10px',

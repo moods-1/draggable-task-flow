@@ -7,33 +7,33 @@ import React, {
 } from 'react';
 import { useSnackbar } from 'notistack';
 
-import { getCompanyUsers } from '../api/users';
+import { getCompanyUsers, getUserById } from '../api/users';
 import { getCompanyColumns } from '../api/columns';
 import { getCompanyTasks, taksDueSoon } from '../api/tasks';
 import { getCompanyById } from '../api/companies';
 import {
-	getCompanyId,
-	getIsAdmin,
 	getStoredUser,
+	handleLogin,
+	unauthorizedLogout,
 } from '../helpers/helperFunctions';
 
 export const TaskContext = createContext({});
 
 export const TaskContextProvider = (props) => {
 	const [users, setUsers] = useState([]);
+	const [loggedInUser, setLoggedInUser] = useState(null);
+	const [isAdmin, setIsAdmin] = useState(false);
 	const [refetchUsers, setRefetchUsers] = useState(false);
 	const [tasks, setTasks] = useState({});
 	const [columns, setColumns] = useState({});
 	const [tasksDue, setTasksDue] = useState([]);
 	const [company, setCompany] = useState({});
+	const [headerText, setHeaderText] = useState({ title: '', subtitle: '' });
 	const { enqueueSnackbar } = useSnackbar();
 	const [dashboard, setDashboard] = useState({
 		sidebarLarge: true,
 		sidebarWidth: 0,
 	});
-	const companyId = useMemo(() => getCompanyId(), []);
-	const isAdmin = useMemo(() => getIsAdmin(), []);
-	const loggedInUser = getStoredUser();
 
 	const snack = useCallback(
 		(message, type) => {
@@ -41,6 +41,24 @@ export const TaskContextProvider = (props) => {
 		},
 		[enqueueSnackbar]
 	);
+
+	const handleUserLogin = useCallback((data) => {
+		if (data) {
+			handleLogin(data);
+			setLoggedInUser(data);
+			setIsAdmin(data.roles.includes('admin'));
+		}
+	}, []);
+
+	const handleUserLogout = useCallback(() => {
+		unauthorizedLogout();
+		setLoggedInUser(null);
+		setIsAdmin(false);
+	}, []);
+
+	const handleHeaderText = useCallback((data) => {
+		setHeaderText(data);
+	},[]);
 
 	const handleDashboard = useCallback(
 		(field, value, multiple) => {
@@ -109,6 +127,7 @@ export const TaskContextProvider = (props) => {
 
 	useEffect(() => {
 		async function getAllTasks() {
+			const { companyId } = loggedInUser;
 			const taskData = await getCompanyTasks(false, companyId);
 			const { status, response, message } = taskData;
 			if (status === 200) {
@@ -122,11 +141,12 @@ export const TaskContextProvider = (props) => {
 				snack(message || 'There was an error retrieving tasks.', 'error');
 			}
 		}
-		getAllTasks();
-	}, [companyId, snack]);
+		if (loggedInUser) getAllTasks();
+	}, [snack, loggedInUser]);
 
 	useEffect(() => {
 		async function getUsers() {
+			const { companyId } = loggedInUser;
 			if (companyId) {
 				const userData = await getCompanyUsers(companyId);
 				const { status, response, message } = userData;
@@ -137,11 +157,12 @@ export const TaskContextProvider = (props) => {
 				}
 			}
 		}
-		getUsers();
-	}, [companyId, refetchUsers, snack]);
+		if (loggedInUser) getUsers();
+	}, [refetchUsers, snack, loggedInUser]);
 
 	useEffect(() => {
 		async function getColumns() {
+			const { companyId } = loggedInUser;
 			const columnData = await getCompanyColumns(companyId);
 			const { status, response, message } = columnData;
 			if (status === 200) {
@@ -155,11 +176,12 @@ export const TaskContextProvider = (props) => {
 				snack(message || 'There was an error retrieving columns.', 'error');
 			}
 		}
-		getColumns();
-	}, [companyId, snack]);
+		if (loggedInUser) getColumns();
+	}, [snack, loggedInUser]);
 
 	useEffect(() => {
 		async function getTasksDueSoon() {
+			const { companyId } = loggedInUser;
 			const dueSoon = await taksDueSoon(5, companyId);
 			const { status, response, message } = dueSoon;
 			if (status === 200) {
@@ -171,11 +193,12 @@ export const TaskContextProvider = (props) => {
 				);
 			}
 		}
-		getTasksDueSoon();
-	}, [companyId, snack, tasks]);
+		if (loggedInUser) getTasksDueSoon();
+	}, [snack, tasks, loggedInUser]);
 
 	useEffect(() => {
 		async function getCompany() {
+			const { companyId } = loggedInUser;
 			if (companyId) {
 				const result = await getCompanyById(companyId);
 				const { status, response, message } = result;
@@ -189,8 +212,22 @@ export const TaskContextProvider = (props) => {
 				}
 			}
 		}
-		getCompany();
-	}, [companyId, snack]);
+		if (loggedInUser) getCompany();
+	}, [snack, loggedInUser]);
+
+	useEffect(() => {
+		const loggedUser = getStoredUser();
+		const fetchUser = async () => {
+			const { _id } = loggedUser;
+			const result = await getUserById(_id);
+			const { status, response } = result;
+			if (status < 400) {
+				setLoggedInUser(response);
+				setIsAdmin(response.roles.includes('admin'));
+			}
+		};
+		if (loggedUser) fetchUser();
+	}, []);
 
 	const providerValue = useMemo(
 		() => ({
@@ -203,6 +240,10 @@ export const TaskContextProvider = (props) => {
 			handleColumns,
 			handleNewTask,
 			handleUsers,
+			handleUserLogin,
+			handleUserLogout,
+			handleHeaderText,
+			headerText,
 			loggedInUser,
 			setRefetchUsers,
 			tasksDue,
@@ -220,6 +261,10 @@ export const TaskContextProvider = (props) => {
 			handleColumns,
 			handleNewTask,
 			handleUsers,
+			handleUserLogin,
+			handleUserLogout,
+			handleHeaderText,
+			headerText,
 			loggedInUser,
 			setRefetchUsers,
 			tasksDue,

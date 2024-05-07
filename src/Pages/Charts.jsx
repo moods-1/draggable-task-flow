@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import MultipleChart from '../components/MultipleChart';
 import PieChart from '../components/PieChart';
@@ -9,15 +9,16 @@ import {
 	formatPieDonutChartData,
 	getCompanyId,
 } from '../helpers/helperFunctions';
-import CustomSpinner from '../components/custom/CustomSpinner';
+import { Slider } from '../components/custom/Loaders';
+import { TaskContext } from '../context/taskContext';
 
 const Charts = ({ snack }) => {
 	const [chartsLoading, setChartsLoading] = useState(true);
 	const [multipleChartsCategories, setMultipleChartsCategories] = useState([]);
 	const [multipleChartsSeries, setMultipleChartsSeries] = useState([]);
 	const [pieDonutSeriesData, setPieDonutSeriesData] = useState([]);
-
 	const classes = useStyles();
+	const { handleHeaderText } = useContext(TaskContext);
 
 	useEffect(() => {
 		setChartsLoading(true);
@@ -40,21 +41,28 @@ const Charts = ({ snack }) => {
 		fetchTasks();
 	}, [snack]);
 
+	useEffect(() => {
+		handleHeaderText({ title: 'Charts', subtitle: 'Visualize Workflow' });
+	}, [handleHeaderText]);
+
 	return (
 		<div className={classes.chartsMain}>
-			<div className={classes.chartsContent}>
-				{chartsLoading ? (
-					<CustomSpinner height='80vh' color={'primary'} />
-				) : (
-					<>
+			{chartsLoading ? (
+				<div className={classes.chartBox} style={{ height: 500 }}>
+					<h5>Loading ...</h5>
+					<Slider />
+				</div>
+			) : (
+				<>
+					<div className={classes.chartsContent}>
 						<MultipleChart
 							series={multipleChartsSeries}
 							categories={multipleChartsCategories}
 						/>
 						<PieChart series={pieDonutSeriesData} />
-					</>
-				)}
-			</div>
+					</div>
+				</>
+			)}
 		</div>
 	);
 };
