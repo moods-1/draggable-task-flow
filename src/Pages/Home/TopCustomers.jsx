@@ -24,7 +24,9 @@ export default function TopCustomers() {
 			<p className='section-title'>Top Customers by Licenses </p>
 			<div className='customer-card-content'>
 				{isLoading ? (
-					<Slider />
+					<div className='slider-div'>
+						<Slider />
+					</div>
 				) : (
 					topCustomers.map((customer, idx) => (
 						<TopCustomerCard key={idx} customer={customer} />

@@ -40,6 +40,10 @@ export default makeStyles((theme) => ({
 			flexDirection: 'column',
 			alignItems: 'stretch',
 			justifyContent: 'stretch',
+			'& .slider-div': {
+				height: '300px',
+				width: '100%',
+			},
 			'& .license-card': {
 				display: 'flex',
 				gap: '15px',

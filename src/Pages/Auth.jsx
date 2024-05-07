@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { TaskContext } from '../context/taskContext';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import { Button } from 'reactstrap';
 
+import { TaskContext } from '../context/taskContext';
 import ModalTextField from '../components/Modals/ModalTextField';
 import useStyles from '../styles/AuthStyles';
 import { Dashboard } from '../assets/images';
 import { userLogin } from '../api/users';
-import { handleLogin, getLoggedIn } from '../helpers/helperFunctions';
+import { getLoggedIn } from '../helpers/helperFunctions';
 
 const inputProps = {
 	maxLength: 30,
