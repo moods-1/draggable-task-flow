@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { TaskContextProvider } from './context/taskContext';
-// import { Mixpanel } from './components/Mixpanel';
+import { Mixpanel } from './components/Mixpanel';
 import Users from './Pages/Users';
 import Tasks from './Pages/Tasks';
 import Home from './Pages/Home/Home';
@@ -17,9 +17,9 @@ function App() {
 	const classes = useStyles();
 	const { enqueueSnackbar } = useSnackbar();
 
-	// Mixpanel.track('Task dashboard site accessed', {
-	// 	action: 'Task dashboard site accessed.',
-	// });
+	Mixpanel.track('Task dashboard site accessed', {
+		action: 'Task dashboard site accessed.',
+	});
 
 	const snack = useCallback(
 		(message, type) => {
