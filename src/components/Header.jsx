@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-
 import { Logout, Edit } from '@mui/icons-material';
+
 import { TaskContext } from '../context/taskContext';
 import useStyles from '../styles/HeaderStyles';
 import { DefaultProfile } from '../assets/images';
 import { phoneNumberHyphenator } from '../helpers/helperFunctions';
 import UserModal from '../components/Modals/UserModal';
 import ClickOutsideHandler from './custom/ClickOutsideHandler';
-import { logoutUser } from '../api/users';
 
 function Header() {
 	const [showProfileDetails, setShowProfileDetails] = useState(false);
@@ -26,16 +25,8 @@ function Header() {
 	};
 
 	const handleLogout = () => {
+		handleUserLogout();
 		setShowProfileDetails(false);
-		const { _id: id } = loggedInUser;
-		const logout = async () => {
-			const result = await logoutUser({ id });
-			const { status } = result;
-			if (status < 400) {
-				handleUserLogout();
-			}
-		};
-		logout();
 	};
 
 	useEffect(() => {

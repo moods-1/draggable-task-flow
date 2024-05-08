@@ -45,18 +45,6 @@ code {
 .orange {
 	background-color: #f5b225;
 }
-/* .red {
-	color: #fff;
-	background: red;
-}
-.green {
-	color: #fff;
-	background: green;
-}
-.orange {
-	color: #fff;
-	background: orange;
-} */
 .dashcard {
 	padding: 20px;
 	border-radius: 10px;
@@ -68,4 +56,7 @@ code {
 }
 .home-users {
 	margin: 20px -20px;
+}
+.round-img {
+	border-radius: 50%;
 }

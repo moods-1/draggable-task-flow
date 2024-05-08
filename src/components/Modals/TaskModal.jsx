@@ -5,6 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { CalendarMonth } from '@mui/icons-material';
+
 import SearchInput from '../custom/SearchInput';
 import { DefaultProfile } from '../../assets/images';
 import { TaskContext } from '../../context/taskContext';

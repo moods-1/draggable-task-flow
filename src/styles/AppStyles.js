@@ -2,9 +2,13 @@ import { makeStyles } from '@material-ui/core';
 export default makeStyles((theme) => ({
 	appMain: {
 		width: '100%',
+		maxWidth: '1920px',
+		margin: '0 auto',
 		height: '100vh',
 		backgroundColor: '#fefefe',
 		color: '#000',
+		borderRight: `1px solid ${theme.palette.background.dark}`,
+		borderLeft: `1px solid ${theme.palette.background.dark}`,
 		'& .MuiButton, .btn': {
 			boxShadow: 'none!important',
 		},
@@ -35,9 +39,6 @@ export default makeStyles((theme) => ({
 					background: 'transparent',
 					outlineStyle: 'none',
 				},
-			},
-			'& img': {
-				borderRadius: '50%',
 			},
 		},
 	},

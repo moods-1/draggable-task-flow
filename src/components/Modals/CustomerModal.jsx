@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Modal, ModalBody, Row, Col, Button, ModalHeader } from 'reactstrap';
+
 import ModalTextField from './ModalTextField';
 import { DefaultProfile } from '../../assets/images';
 import useStyles from '../../styles/TaskUserModalStyles';
-import { makeRandomId } from '../../helpers/helperFunctions';
 import { NUMBER_REGEX } from '../../helpers/constants';
 import { TaskContext } from '../../context/taskContext';
 import { addCustomer, updateCustomer } from '../../api/customers';
 
-const newId = makeRandomId(8);
 const acceptableFiles = ['png', 'jpg', 'jpeg'];
 const textProps = {
 	maxLength: 40,
@@ -23,7 +22,6 @@ function CustomerModal({
 	type,
 }) {
 	const classes = useStyles();
-	const id = currentCustomer._id || newId;
 	const [customer, setCustomer] = useState({});
 	const hiddenFileInput = useRef();
 	const { snack, isAdmin } = useContext(TaskContext);
@@ -116,7 +114,7 @@ function CustomerModal({
 		if (type === 'new') {
 			setCustomer({ assignedTasks: [] });
 		} else setCustomer(currentCustomer);
-	}, [currentCustomer, id, type]);
+	}, [currentCustomer, type]);
 
 	return (
 		<Modal

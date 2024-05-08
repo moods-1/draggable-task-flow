@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { useSnackbar } from 'notistack';
 
-import { getCompanyUsers, getUserById } from '../api/users';
+import { getCompanyUsers, getUserById, logoutUser } from '../api/users';
 import { getCompanyColumns } from '../api/columns';
 import { getCompanyTasks, taksDueSoon } from '../api/tasks';
 import { getCompanyById } from '../api/companies';
@@ -51,14 +51,22 @@ export const TaskContextProvider = (props) => {
 	}, []);
 
 	const handleUserLogout = useCallback(() => {
-		unauthorizedLogout();
-		setLoggedInUser(null);
-		setIsAdmin(false);
-	}, []);
+		const { _id: id } = loggedInUser;
+		const logout = async () => {
+			const result = await logoutUser({ id });
+			const { status } = result;
+			if (status < 400) {
+				unauthorizedLogout();
+				setLoggedInUser(null);
+				setIsAdmin(false);
+			}
+		};
+		if(id) logout();
+	}, [loggedInUser]);
 
 	const handleHeaderText = useCallback((data) => {
 		setHeaderText(data);
-	},[]);
+	}, []);
 
 	const handleDashboard = useCallback(
 		(field, value, multiple) => {
@@ -91,17 +99,27 @@ export const TaskContextProvider = (props) => {
 		(value, type) => {
 			if (type === 'new') {
 				setUsers((prevState) => [value, ...prevState]);
-			} else {
+			} else if (type === 'edit') {
 				const { _id: id } = value;
-				setUsers((prevState) => {
-					const localUsers = [...prevState];
-					const userIndex = localUsers.findIndex((u) => u._id === id);
-					localUsers.splice(userIndex, 1, { ...value });
-					return [...localUsers];
+				setUsers((prev) => {
+					const userIndex = prev.findIndex((u) => u._id === id);
+					if (userIndex || userIndex === 0) {
+						return [
+							...prev.slice(0, userIndex),
+							value,
+							...prev.slice(userIndex + 1),
+						];
+					}
+					return prev;
 				});
+				if (loggedInUser._id === id) {
+					setLoggedInUser(value);
+				}
+			} else if (type === 'load') {
+				setUsers([...value]);
 			}
 		},
-		[setUsers]
+		[loggedInUser]
 	);
 
 	const handleNewTask = useCallback(
@@ -149,16 +167,14 @@ export const TaskContextProvider = (props) => {
 			const { companyId } = loggedInUser;
 			if (companyId) {
 				const userData = await getCompanyUsers(companyId);
-				const { status, response, message } = userData;
-				if (status === 200) {
+				const { status, response } = userData;
+				if (status < 400) {
 					setUsers(response);
-				} else {
-					snack(message || 'There was an error retrieving users.', 'error');
 				}
 			}
 		}
-		if (loggedInUser) getUsers();
-	}, [refetchUsers, snack, loggedInUser]);
+		if (loggedInUser && refetchUsers) getUsers();
+	}, [refetchUsers, loggedInUser]);
 
 	useEffect(() => {
 		async function getColumns() {

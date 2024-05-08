@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import { ChevronLeft, ChevronRight, Logout } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 import { routes } from '../routes';
 import useStyles from '../styles/SidebarStyles';
@@ -8,7 +8,8 @@ import { DefaultLogo } from '../assets/images';
 
 function Sidebar() {
 	const classes = useStyles();
-	const { dashboard, handleDashboard, company } = useContext(TaskContext);
+	const { dashboard, handleDashboard, company, handleUserLogout } =
+		useContext(TaskContext);
 	const { sidebarLarge } = dashboard;
 	const siderBarRef = useRef();
 	const brand = company?.logo || DefaultLogo;
@@ -35,16 +36,24 @@ function Sidebar() {
 			</div>
 			<div className={`${sidebarLarge ? 'large' : 'small'}`}>
 				<ul>
-					{routes.map(({ title, path, icon }) => (
-						<li key={path}>
-							<NavLink to={path}>
-								<span>
-									{icon ? icon : ''}
-									{sidebarLarge ? title : ''}
-								</span>
-							</NavLink>
-						</li>
-					))}
+					<span>
+						{routes.map(({ title, path, icon }) => (
+							<li key={path}>
+								<NavLink to={path}>
+									<span>
+										{icon ? icon : ''}
+										{sidebarLarge ? title : ''}
+									</span>
+								</NavLink>
+							</li>
+						))}
+					</span>
+					<li onClick={handleUserLogout}>
+						<span>
+							<Logout fontSize='small' />
+							LOGOUT
+						</span>
+					</li>
 				</ul>
 			</div>
 		</div>

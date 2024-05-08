@@ -11,7 +11,7 @@ import UserModal from '../components/Modals/UserModal';
 import { phoneNumberHyphenator } from '../helpers/helperFunctions';
 
 function Users({ snack, hideFilter, hideHeader }) {
-	const { users, loggedInUser, isAdmin, handleHeaderText } =
+	const { users, loggedInUser, setRefetchUsers, isAdmin, handleHeaderText } =
 		useContext(TaskContext);
 	const [showNewUserModal, setShowNewUserModal] = useState(false);
 	const [dataFilter, setDataFilter] = useState('');
@@ -35,6 +35,7 @@ function Users({ snack, hideFilter, hideHeader }) {
 					alt={imageAlt}
 					height={30}
 					width={30}
+					className='round-img'
 				/>
 			),
 			loggedIn: loggedIn ? (
@@ -62,8 +63,10 @@ function Users({ snack, hideFilter, hideHeader }) {
 		if (users.length) {
 			setLocalUsers(users);
 			setIsLoading(false);
+		} else {
+			setRefetchUsers((prev) => !prev);
 		}
-	}, [users]);
+	}, [setRefetchUsers, users]);
 
 	useEffect(() => {
 		handleHeaderText({ title: 'Users', subtitle: 'View and Manage Users' });

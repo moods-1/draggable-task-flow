@@ -18,14 +18,14 @@ const inputProps = {
 	},
 };
 
-const Auth = ({ snack }) => {
+const Auth = () => {
 	// Pre-filled for demo purposes
 	const [email, setEmail] = useState('dan.jones@moods.ca');
 	const [password, setPassword] = useState('djPassword');
 	const [disableSubmit, setDisableSubmit] = useState(true);
 	const navigate = useNavigate();
 	const loggedIn = getLoggedIn();
-	const { handleUserLogin } = useContext(TaskContext);
+	const { handleUserLogin, snack } = useContext(TaskContext);
 
 	const classes = useStyles();
 

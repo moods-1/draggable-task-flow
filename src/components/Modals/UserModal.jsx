@@ -12,13 +12,11 @@ import ModalTextField from './ModalTextField';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { DefaultProfile } from '../../assets/images';
 import useStyles from '../../styles/TaskUserModalStyles';
-import { makeRandomId } from '../../helpers/helperFunctions';
 import { NUMBER_REGEX } from '../../helpers/constants';
 import { TaskContext } from '../../context/taskContext';
 import UserTaskList from '../UserTaskList';
 import { addUser, updateUser } from '../../api/users';
 
-const newId = makeRandomId(8);
 const acceptableFiles = ['png', 'jpg', 'jpeg'];
 const textProps = {
 	maxLength: 30,
@@ -27,7 +25,6 @@ const textProps = {
 
 function UserModal({ open, toggle, currentUser, setCurrentUser, type }) {
 	const classes = useStyles();
-	const id = currentUser?.id || newId;
 	const [user, setUser] = useState({});
 	const [showTasks, setShowTasks] = useState(false);
 	const [showTasksTable, setShowTasksTable] = useState(false);
@@ -96,9 +93,9 @@ function UserModal({ open, toggle, currentUser, setCurrentUser, type }) {
 			const newImage = user.image !== image;
 			user.newImage = newImage;
 			const result = await updateUser(user);
-			const { status } = result;
-			if (status === 200) {
-				handleUsers(user, type);
+			const { status, response } = result;
+			if (status < 400) {
+				handleUsers(response, type);
 				toggle();
 				return snack(`${user.firstName} updated successfully!`, 'success');
 			} else {
@@ -121,7 +118,7 @@ function UserModal({ open, toggle, currentUser, setCurrentUser, type }) {
 		} else {
 			setUser(currentUser);
 		}
-	}, [currentUser, id, type]);
+	}, [currentUser, type]);
 
 	useEffect(() => {
 		if (type === 'edit' && user?.assignedTasks) {

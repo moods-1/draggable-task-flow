@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+
 export default makeStyles((theme) => ({
 	sidebarMain: {
 		color: '#FFF',
@@ -16,8 +17,8 @@ export default makeStyles((theme) => ({
 			overflow: 'hidden',
 			'& img': {
 				width: 30,
-				height:30,
-			}
+				height: 30,
+			},
 		},
 		'& hr': {
 			marginTop: '0rem',
@@ -27,7 +28,7 @@ export default makeStyles((theme) => ({
 			width: '180px',
 			fontSize: '13px',
 			transition: 'width 300ms',
-			padding: '0 5px',			
+			padding: '0 5px',
 		},
 		'& .small': {
 			width: '40px',
@@ -38,25 +39,31 @@ export default makeStyles((theme) => ({
 			},
 		},
 		'& ul': {
+			minHeight: '88vh',
 			listStyleType: 'none',
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: 'space-between',
 			'& li': {
 				padding: '2px 10px',
 				width: '100%',
 				borderRadius: '3px',
 				marginBottom: '3px',
 				fontWeight: 500,
+				cursor: 'pointer',
+				'& span': {
+					height: 30,
+					gap: '10px',
+					display: 'flex',
+					alignItems: 'center',
+				},
 				'&:hover': {
 					background: theme.palette.background.light,
+					color: theme.palette.text.dark,
 				},
 				'& a': {
 					textDecoration: 'none',
 					color: theme.palette.text.light,
-					'& span': {
-						height: 30,
-						gap: '10px',
-						display: 'flex',
-						alignItems: 'end',
-					},
 					'&:hover': {
 						color: theme.palette.text.dark,
 						background: theme.palette.background.light,

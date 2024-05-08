@@ -1,6 +1,5 @@
-import { useCallback } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
+
 import { TaskContextProvider } from './context/taskContext';
 import { Mixpanel } from './components/Mixpanel';
 import Users from './Pages/Users';
@@ -15,31 +14,21 @@ import useStyles from './styles/AppStyles';
 
 function App() {
 	const classes = useStyles();
-	const { enqueueSnackbar } = useSnackbar();
-
 	Mixpanel.track('Task dashboard site accessed', {
 		action: 'Task dashboard site accessed.',
 	});
-
-	const snack = useCallback(
-		(message, type) => {
-			enqueueSnackbar(message, { variant: type, autoHideDuration: 4000 });
-		},
-		[enqueueSnackbar]
-	);
 
 	return (
 		<TaskContextProvider>
 			<div className={classes.appMain}>
 				<Routes>
-					<Route path='/auth' element={<Auth snack={snack} />} />
+					<Route path='/auth' element={<Auth />} />
 					<Route path='/' element={<Dashboard />}>
-						{/* <Route index element={<Tasks snack={snack} />} /> */}
-						<Route index element={<Home snack={snack} />} />
-						<Route path='tasks' element={<Tasks snack={snack} />} />
-						<Route path='users' element={<Users snack={snack} />} />
-						<Route path='charts' element={<Charts snack={snack} />} />
-						<Route path='customers' element={<Customers snack={snack} />} />
+						<Route index element={<Home />} />
+						<Route path='tasks' element={<Tasks />} />
+						<Route path='users' element={<Users />} />
+						<Route path='charts' element={<Charts />} />
+						<Route path='customers' element={<Customers />} />
 					</Route>
 					<Route path='*' element={<ErrorPage />} />
 				</Routes>

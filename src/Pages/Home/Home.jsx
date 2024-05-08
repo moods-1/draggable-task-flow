@@ -10,6 +10,7 @@ import { TaskContext } from '../../context/taskContext';
 import { phoneNumberHyphenator } from '../../helpers/helperFunctions';
 import { DefaultProfile } from '../../assets/images';
 import { USERS_TABLE_HEADERS } from '../../helpers/constants';
+import { getCompanyUsers } from '../../api/users';
 
 const xAxisOptions = {
 	type: 'datetime',
@@ -23,7 +24,8 @@ export default function Home() {
 	const [homeUsers, setHomeUsers] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const classes = useStyles();
-	const { users, handleHeaderText } = useContext(TaskContext);
+	const { handleUsers, handleHeaderText, loggedInUser, users, snack } =
+		useContext(TaskContext);
 	const tableHeaders = USERS_TABLE_HEADERS.filter((u) => u.label !== 'ACTION');
 
 	const rows = homeUsers.map((user) => {
@@ -38,6 +40,7 @@ export default function Home() {
 					alt={imageAlt}
 					height={30}
 					width={30}
+					className='round-img'
 				/>
 			),
 			loggedIn: loggedIn ? (
@@ -53,11 +56,26 @@ export default function Home() {
 	}, [handleHeaderText]);
 
 	useEffect(() => {
-		if (users.length) {
-			setHomeUsers(users);
+		async function getUsers() {
+			if (users.length) {
+				setHomeUsers(users);
+			} else {
+				const { companyId } = loggedInUser;
+				if (companyId) {
+					const userData = await getCompanyUsers(companyId);
+					const { status, response, message } = userData;
+					if (status === 200) {
+						handleUsers(response, 'load');
+						setHomeUsers(response);
+					} else {
+						snack(message || 'There was an error retrieving users.', 'error');
+					}
+				}
+			}
 			setIsLoading(false);
 		}
-	}, [users]);
+		if (loggedInUser) getUsers();
+	}, [snack, loggedInUser, handleUsers, users]);
 
 	return (
 		<div className={classes.homeMain}>
