@@ -61,7 +61,7 @@ export const TaskContextProvider = (props) => {
 				setIsAdmin(false);
 			}
 		};
-		if(id) logout();
+		if (id) logout();
 	}, [loggedInUser]);
 
 	const handleHeaderText = useCallback((data) => {

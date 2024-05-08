@@ -39,9 +39,10 @@ export default makeStyles((theme) => ({
 				borderRadius: '50%',
 			},
 			'& .header-user-details': {
-				minWidth: 140,
-				maxWidth: 200,
-				padding: '0px 20px 10px',
+				width: 'auto',
+				minWidth: 160,
+				maxWidth: 300,
+				padding: '0px 10px 10px',
 				height: 'auto',
 				minHeight: 60,
 				listStyle: 'none',
@@ -55,7 +56,10 @@ export default makeStyles((theme) => ({
 				color: '#FFF',
 				background: theme.palette.background.dark,
 				'& li': {
-					marginBottom: '5px',
+					padding: '2px 10px',
+					width: '100%',
+					borderRadius: '3px',
+					marginBottom: '3px',
 				},
 				'& .action': {
 					cursor: 'pointer',
@@ -63,7 +67,9 @@ export default makeStyles((theme) => ({
 					justifyContent: 'space-between',
 					alignItems: 'center',
 					'&:hover': {
-						color: theme.palette.primary.main,
+						fontWeight: 500,
+						background: theme.palette.background.light,
+						color: theme.palette.text.dark,
 					},
 					'& svg': {
 						fontSize: '17px',

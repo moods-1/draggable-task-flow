@@ -93,7 +93,9 @@ const Auth = () => {
 						Submit
 					</Button>
 				</form>
-				<p className={classes.authNote}>*Pre-filled for demo purposes.</p>
+				<p className={classes.authNote}>
+					*Non-admin account pre-filled for demo purposes.
+				</p>
 			</div>
 		</div>
 	);
