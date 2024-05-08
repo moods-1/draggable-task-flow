@@ -51,7 +51,7 @@ function Sidebar() {
 					<li onClick={handleUserLogout}>
 						<span>
 							<Logout fontSize='small' />
-							LOGOUT
+							{sidebarLarge ? 'LOGOUT' : ''}
 						</span>
 					</li>
 				</ul>
