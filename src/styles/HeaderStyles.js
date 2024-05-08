@@ -47,6 +47,7 @@ export default makeStyles((theme) => ({
 				minHeight: 60,
 				listStyle: 'none',
 				borderTop: 'none',
+				borderBottomLeftRadius: '7px',
 				position: 'absolute',
 				right: '-30px',
 				top: 40,

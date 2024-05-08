@@ -7,7 +7,7 @@ export default makeStyles((theme) => ({
 		display: 'grid',
 		placeItems: 'center',
 		textAlign: 'center',
-		color: '#fff',
+		color: '#000',
 		fontSize: '18px',
 		'& img': {
 			width: '100%',
