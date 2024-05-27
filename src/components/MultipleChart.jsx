@@ -10,7 +10,7 @@ const MultipleChart = ({ series, categories }) => {
 	const [enable3D, setEnable3D] = useState(false);
 	const [enableDataLabels, setEnableDataLabels] = useState(false);
 	const [stacked, setStacked] = useState(false);
-	const [multipleChartType, setMultipleChartType] = useState('bar');
+	const [multipleChartType, setMultipleChartType] = useState('area');
 	const classes = useStyles();
 
 	const handleChartSelection = (e) => {
