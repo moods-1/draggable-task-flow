@@ -6,6 +6,7 @@ import cylinder from 'highcharts/modules/cylinder';
 import HC_more from 'highcharts/highcharts-more';
 import HC_exporting from 'highcharts/modules/exporting';
 import HC_export_data from 'highcharts/modules/export-data';
+import highchartsAccessibility from "highcharts/modules/accessibility";
 import { CHART_COLORS } from '../helpers/constants';
 
 HC_more(Highcharts); // required to allow bubble charts
@@ -13,6 +14,7 @@ HC_exporting(Highcharts); // required to export/download images png, jpg, svg
 HC_export_data(Highcharts); //  required to export csv, xls
 highcharts3d(Highcharts);
 cylinder(Highcharts);
+highchartsAccessibility(Highcharts);
 
 const MultipleCharts = ({
 	chartType,

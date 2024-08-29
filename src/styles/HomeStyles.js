@@ -31,6 +31,7 @@ export default makeStyles((theme) => ({
 			},
 			'& .section-flex-2': {
 				flex: 1,
+				display: 'flex',
 				width: '100%',
 			},
 		},
